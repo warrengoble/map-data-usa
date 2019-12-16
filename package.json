@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "NODE_ENV=dev node server/",
-    "build": "next build",
-    "start": "next start"
+    "build": "next build ./client/",
+    "start": "next start ./client/"
   },
   "author": "Warren Goble",
   "license": "MIT",
