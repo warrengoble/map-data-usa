@@ -1,10 +1,26 @@
 import React from "react";
 
-// import MainApp from "../containers/MainApp";
 import MapUSA from "../components/MapUSA";
-// import Options from "../components/Options";
+import QueryTool from "../components/QueryTool";
 
 export default () => {
-  // return <div>Hello world!</div>
-  return <MapUSA />;
+  // 
+
+  return (
+    <div className="root">
+      <style jsx>
+        {`
+        .root {
+          display: flex;
+          width: 100vw;
+          height: 100vh;
+          background: #111;
+        }
+        `
+        } 
+      </style>
+      <QueryTool />
+      <MapUSA />
+    </div>
+  );
 };

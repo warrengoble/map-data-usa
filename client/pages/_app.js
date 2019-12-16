@@ -21,6 +21,14 @@ export default class extends App {
 
     return (
       <StoreProvider>
+        <style jsx global>
+          {`
+            body {
+              margin: 0;
+              padding: 0;
+            }
+          `}
+        </style>
         <Component {...pageProps} />
       </StoreProvider>
     );
