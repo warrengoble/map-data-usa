@@ -25,6 +25,7 @@
     "mobx-react-lite": "^1.5.1",
     "next": "^9.1.5",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react-dom": "^16.12.0",
+    "react-resize-detector": "^4.2.1"
   }
 }
