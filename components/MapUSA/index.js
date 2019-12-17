@@ -4,6 +4,7 @@ import ReactResizeDetector from "react-resize-detector";
 
 // import counties
 import usaCounties from "./usaCounties";
+import background from "./background.jpg";
 
 // TODO Image dimension are hard coded.  Might want to make more dynamic for the future
 const width = 989.98;
@@ -11,26 +12,20 @@ const height = 627.07;
 
 export default ({ countyIds = [] }) => {
   const [{ width: w, height: h }, setSize] = useState({ width, height });
+  const scale = Math.min(w / width, h / height);
 
-  console.log(w, h);
   return (
     <div className="container">
       <style jsx>
         {`
           .container {
-            display: flex;
-            position: relative;
             width: 100%;
             height: 100%;
             overflow: hidden;
           }
 
-          .background {
-            background: black;
-          }
-
           .overlay {
-            // background: red;
+            position: absolute;
           }
         `}
       </style>
@@ -41,7 +36,6 @@ export default ({ countyIds = [] }) => {
           setSize({ width, height });
         }}
       />
-      <div className="background"></div>
       <svg
         className="overlay"
         viewBox={`0 0 990 627`}
@@ -51,11 +45,20 @@ export default ({ countyIds = [] }) => {
         xmlns="http://www.w3.org/2000/svg"
       >
         <g id="counties">
-          {values(usaCounties)
-            // .slice(0, 100)
-            .map(({ path }) => {
-              return <path d={path} fillOpacity={0.4} fill="red"></path>;
-            })}
+          <image href={background} width="990" height="627" />
+          {entries(usaCounties).map(([key, { path }]) => {
+            return (
+              <path
+                key={key}
+                d={path}
+                fillOpacity={0.5}
+                fill="red"
+                strokeWidth={1}
+                strokeOpacity={0.2}
+                stroke="black"
+              ></path>
+            );
+          })}
         </g>
       </svg>
     </div>
