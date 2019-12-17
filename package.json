@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "NODE_ENV=dev node server/",
-    "build": "next build ./client/",
-    "start": "next start ./client/"
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
   },
   "author": "Warren Goble",
   "license": "MIT",
