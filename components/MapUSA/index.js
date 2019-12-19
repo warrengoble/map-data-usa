@@ -12,7 +12,7 @@ const height = 627.07;
 
 export default ({ countyIds = [] }) => {
   const [{ width: w, height: h }, setSize] = useState({ width, height });
-  const scale = Math.min(w / width, h / height);
+  // const scale = Math.min(w / width, h / height);
 
   return (
     <div className="container">
@@ -44,14 +44,14 @@ export default ({ countyIds = [] }) => {
         version="1.0"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <g id="counties">
-          <image href={background} width="990" height="627" />
+        <g>
+          <image href={background} width="990" height="627" opacity={0.5} />
           {entries(usaCounties).map(([key, { path }]) => {
             return (
               <path
                 key={key}
                 d={path}
-                fillOpacity={0.5}
+                fillOpacity={0.2}
                 fill="red"
                 strokeWidth={1}
                 strokeOpacity={0.2}
