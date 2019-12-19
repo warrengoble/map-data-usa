@@ -1,12 +1,21 @@
 import React, { useState } from "react";
 import ReactResizeDetector from "react-resize-detector";
 
-import usaCounties, {
+// import usaCounties, {
+//   pathBorders,
+//   pathSeparator,
+//   mapWidth,
+//   mapHeight,
+//   counties as usaCounties,
+// } from "./usaCounties"; // Generated from converter. https://github.com/warrengoble/convert-counties-svg2js
+
+import {
   pathBorders,
   pathSeparator,
   mapWidth,
-  mapHeight
-} from "./usaCounties"; // Generated from converter. https://github.com/warrengoble/convert-counties-svg2js
+  mapHeight,
+  counties as usaCounties
+} from "./usaCounties.json"; // Generated from converter. https://github.com/warrengoble/convert-counties-svg2js
 
 import background from "./background.jpg";
 import County from "./County";
