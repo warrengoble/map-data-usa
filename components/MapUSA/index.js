@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { entries, values } from "lodash/fp";
+import { entries } from "lodash/fp";
 import ReactResizeDetector from "react-resize-detector";
 
 // import counties
