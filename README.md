@@ -50,6 +50,9 @@ NASA for providing the satellite overlay images.
 ## Notes & TODOS
 
 - Figure out what to do with datastore for lasting demo. Using serverless micro api and create working example. Serverless and Micro API documentation.
+  - Testing datastores AWS Aurora and Fauna.
+    - https://fauna.com/
+    - https://aws.amazon.com/rds/aurora/
   - https://zeit.co/docs/v2/serverless-functions/introduction/
   - https://github.com/zeit/micro
   - Test with trying to pull directly from Github. Might be able to compact and cut up into a few files. https://raw.githubusercontent.com/warrengoble/quality-of-life-map/master/db/mort.json
