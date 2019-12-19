@@ -15,12 +15,18 @@ export const StoreProvider = ({ children }) => {
   const service = feathers();
   const store = useLocalStore(createStore(service));
 
-  // Trigger when curtain state is updated
+  if (!isServer) {
+    service.find({ query: { filters: true } }).then(values => {
+      store.filters = values.reduce((a, v, i) => ({ ...a, [v]: false }), {});
+    });
+  }
+
+  // Trigger when state is updated
   reaction(
     () => [store.year],
     async titles => {
-      const res = await service.find({ query: { month: store.year } });
-      
+      const res = await service.find({ query: { year: store.year } });
+
       console.log("reaction", res);
     }
   );
