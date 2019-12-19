@@ -32,6 +32,8 @@ https://www.kaggle.com/IHME/us-countylevel-mortality
 
 http://ghdx.healthdata.org/record/ihme-data/united-states-mortality-rates-county-1980-2014
 
+NASA for providing the satellite overlay images.
+
 ## Notes & TODOS
 
 - Figure out what to do with datastore for lasting demo. Using serverless micro api and create working example. Serverless and Micro API documentation. 
