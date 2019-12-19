@@ -23,7 +23,8 @@ export const StoreProvider = ({ children }) => {
     });
   }
 
-  // Trigger when state is updated
+  // Trigger when state is updated.
+  // TODO Add debounce / rate limit here for now.
   reaction(
     () => [store.year, ...values(store.filters).map(v => v)],
     async () => {
