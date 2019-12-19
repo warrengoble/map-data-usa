@@ -1,6 +1,6 @@
 import React from "react";
 
-import usaCounties from "./usaCounties";
+import { counties as usaCounties } from "./usaCounties.json";
 
 export default ({ id, ...props }) => {
   const { [id]: { path, state, name } = {} } = usaCounties;
