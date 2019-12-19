@@ -11,10 +11,10 @@ export default ({ title, onChange = () => {}, ...props }) => {
           }
 
           .switch {
-            padding: 5px;
+            padding: 3px;
           }
           .title {
-            padding: 5px;
+            padding: 3px;
           }
         `}
       </style>
