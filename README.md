@@ -1,29 +1,24 @@
-# Quality of Life USA map
+# Quality of Life USA Map
 
 Description TODO
 
 ## Packages
 
+- NextJS - 
 - React - 
 - Mobx - 
-- Contexture - https://github.com/smartprocure/contexture#readme
-- NextJS - 
+- FeathersJS - 
 
 ## Concept
 
 TODO
 
-## Packages
+## Dataset
 
-- NextJS - 
-- FeathersJS -
-- MobX -
-- Contexture? - not yet planned yet.
+IHME United States Mortality Rates by County 1980-2014: National - All. (Deaths per 100,000 population)
 
-## Database model
+https://www.kaggle.com/IHME/us-countylevel-mortality
 
-feathers-memory
-https://github.com/louischatriot/nedb
-
+http://ghdx.healthdata.org/record/ihme-data/united-states-mortality-rates-county-1980-2014
 
 ## Acknowledgements
