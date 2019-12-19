@@ -2,16 +2,18 @@ const feathers = require("@feathersjs/feathers");
 
 // TODO Clean this up. Hack for demo
 const filters = require("./data/filters").default;
+const countiesIds = require("./data/counties").default;
 
 const app = feathers();
 
-// FIXME Try and use an existing database adapter
+// FIXME Try and use an existing database adapter.
 app.use("/feathers", {
-  async find({ query: { filters: queryFilters } }) {
+  async find({ query: { filters: queryFilters } = {} }) {
     // Generate random data for now
 
-    //
-    return queryFilters ? filters : [];
+    return queryFilters
+      ? filters
+      : countiesIds.map(v => ({ id: Number(v), value: Math.random() * 0.5 }));
   }
   // Not used at moment for demo
   // async get(id, params) {
