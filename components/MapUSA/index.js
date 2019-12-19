@@ -1,18 +1,17 @@
 import React, { useState } from "react";
-import { entries } from "lodash/fp";
 import ReactResizeDetector from "react-resize-detector";
 
 // import counties
-import usaCounties from "./usaCounties";
+import usaCounties from "./usaCounties"; // Generated from converter. https://github.com/warrengoble/convert-counties-svg2js
 import background from "./background.jpg";
+import County from "./County";
 
 // TODO Image dimension are hard coded.  Might want to make more dynamic for the future
 const width = 989.98;
 const height = 627.07;
 
-export default ({ countyIds = [] }) => {
+export default ({ children }) => {
   const [{ width: w, height: h }, setSize] = useState({ width, height });
-  // const scale = Math.min(w / width, h / height);
 
   return (
     <div className="container">
@@ -46,21 +45,11 @@ export default ({ countyIds = [] }) => {
       >
         <g>
           <image href={background} width="990" height="627" opacity={0.5} />
-          {entries(usaCounties).map(([key, { path }]) => {
-            return (
-              <path
-                key={key}
-                d={path}
-                fillOpacity={0.2}
-                fill="red"
-                strokeWidth={1}
-                strokeOpacity={0.2}
-                stroke="black"
-              ></path>
-            );
-          })}
+          {children}
         </g>
       </svg>
     </div>
   );
 };
+
+export { County, usaCounties };
