@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import ReactResizeDetector from "react-resize-detector";
 
-// import counties
-import usaCounties, { pathBorders, pathSeparator } from "./usaCounties"; // Generated from converter. https://github.com/warrengoble/convert-counties-svg2js
+import usaCounties, {
+  pathBorders,
+  pathSeparator,
+  mapWidth,
+  mapHeight
+} from "./usaCounties"; // Generated from converter. https://github.com/warrengoble/convert-counties-svg2js
+
 import background from "./background.jpg";
 import County from "./County";
 
-// TODO Image dimension are hard coded.  Might want to make more dynamic for the future
-const width = 989.98;
-const height = 627.07;
-
 export default ({ children, backgroundOpacity = 0.2 }) => {
-  const [{ width: w, height: h }, setSize] = useState({ width, height });
+  const [{ width: w, height: h }, setSize] = useState({
+    width: mapWidth,
+    height: mapHeight
+  });
 
   return (
     <div className="container">
@@ -37,7 +41,7 @@ export default ({ children, backgroundOpacity = 0.2 }) => {
       />
       <svg
         className="overlay"
-        viewBox={`0 0 990 627`}
+        viewBox={`0 0 ${mapWidth} ${mapHeight}`}
         width={w}
         height={h}
         version="1.0"
@@ -46,8 +50,8 @@ export default ({ children, backgroundOpacity = 0.2 }) => {
         <g>
           <image
             href={background}
-            width="990"
-            height="627"
+            width={mapWidth}
+            height={mapHeight}
             opacity={backgroundOpacity}
           />
           {children}
