@@ -2,7 +2,7 @@ import React from "react";
 import { useObserver } from "mobx-react-lite";
 import { entries } from "lodash/fp";
 
-import MapUSA from "../components/MapUSA";
+import MapUSA, { County } from "../components/MapUSA";
 import SliderControl from "../components/SliderControl";
 import ToggleControl from "../components/ToggleControl";
 
@@ -19,26 +19,48 @@ export default () => {
             display: flex;
             width: 100vw;
             height: 100vh;
-            background: #111;
-            position: relative;
+            background: #222;
           }
 
           .optionsContainer {
-            position: absolute;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             width: 100%;
             font-weight: bold;
             color: #bbb;
             user-select: none;
             z-index: 1;
           }
+
+          .optionsCheckBoxContainer {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+            overflow: auto;
+            background: #111;
+          }
+
+          .optionsMainContainer {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+          }
         `}
       </style>
-      <div className="optionsContainer">
-        {useObserver(() => {
-          return (
-            <>
+      {useObserver(() => {
+        return (
+          <div className="optionsContainer">
+            <div className="optionsCheckBoxContainer">
+              {entries(store.filters).map(([key, checked]) => (
+                <ToggleControl
+                  key={key}
+                  title={key}
+                  onChange={() => store.toggleFilter(key)}
+                  checked={checked}
+                />
+              ))}
+            </div>
+            <div className="optionsMainContainer">
               <SliderControl
                 title="Adjust Date"
                 value={store.year}
@@ -60,19 +82,15 @@ export default () => {
                 )}
                 dots
               />
-              {entries(store.filters).map(([key, checked]) => (
-                <ToggleControl
-                  key={key}
-                  title={key}
-                  onChange={() => store.toggleFilter(key)}
-                  checked={checked}
-                />
-              ))}
-            </>
-          );
-        })}
-      </div>
-      <MapUSA />
+              <MapUSA>
+                {store.results.map(({ id, value }) => (
+                  <County key={id} id={id} fillOpacity={value} fill="red" />
+                ))}
+              </MapUSA>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };
