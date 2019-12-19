@@ -3,7 +3,7 @@ import React from "react";
 import usaCounties from "./usaCounties";
 
 export default ({ id, ...props }) => {
-  const { [id]: { path } = {} } = usaCounties;
+  const { [id]: { path, state, name } = {} } = usaCounties;
 
   return path ? (
     <path
@@ -12,6 +12,8 @@ export default ({ id, ...props }) => {
       strokeOpacity={0.2}
       stroke="black"
       {...props}
-    ></path>
+    >
+      <title>{`${name}, ${state}`}</title>
+    </path>
   ) : null;
 };
