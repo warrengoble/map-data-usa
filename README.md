@@ -34,11 +34,13 @@ http://ghdx.healthdata.org/record/ihme-data/united-states-mortality-rates-county
 
 ## Notes & TODOS
 
+- Figure out what to do with datastore working with serverless micro api and create working example. Micro API documentation here. 
 - Map component can be cut out and packaged into a reusable component on NPM.
 - FeatherJS serverless micro service is incomplete and should be cut out into a reusable component if possible. Will need to test some existing DB adapters. Some of these might not work with the serverless nature and require a re-write.
 - Extend database functionality and integrate reusable checkbox based search using something like Contexture. https://github.com/smartprocure/contexture
 - Clean up map satellite image for Alaska and Hawaii.
 - Add Zoom and pan functionality to map component.
+- Sync MobX store with browser localstorage and save query settings and map controlled props?
 
 ## Map Component
 
