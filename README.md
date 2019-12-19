@@ -17,13 +17,25 @@ This is an application demo and boilerplate to create a visual map of the USA wi
 
 https://quality-of-life-map.now.sh
 
+## Install and dev usage
+
+```bash
+npm install
+
+# dev run locally
+npm run dev
+
+# Goto: http://localhost:3000
+```
+
 ## Packages
 
 - NextJS - https://nextjs.org/
 - React - https://reactjs.org/
-- Mobx - https://mobx.js.org/README.html
+- Mobx - https://mobx.js.org/
 - FeathersJS - https://feathersjs.com/
 - lodash/fp - https://github.com/lodash/lodash/wiki/FP-Guide
+- Ant Design - https://ant.design/
 
 ## Dataset & Acknowledgements
 
@@ -46,7 +58,7 @@ NASA for providing the satellite overlay images.
 - Extend database functionality and integrate reusable checkbox based search using something like Contexture.
   - https://github.com/smartprocure/contexture
 - Clean up map satellite image for Alaska and Hawaii.
-- Add Zoom and pan functionality to map component.
+- Add zoom and pan functionality to Map component.
 - Sync MobX store with browser localstorage and save query settings and map controlled props?
 
 ## Map Component
