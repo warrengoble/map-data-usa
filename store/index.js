@@ -1,15 +1,29 @@
+import { reaction } from "mobx";
 import { useLocalStore, useStaticRendering } from "mobx-react-lite";
-import { createContext, useCallback } from "react";
+import { createContext } from "react";
+
 import createStore from "./createStore";
+import feathers from "./feathers";
 
 // Handle SSR
 const isServer = typeof window === "undefined";
 useStaticRendering(isServer);
 
-export const StoreContext = createContext();
+const StoreContext = createContext();
 
 export const StoreProvider = ({ children }) => {
-  const store = useLocalStore(createStore);
+  const service = feathers();
+  const store = useLocalStore(createStore(service));
+
+  // Trigger when curtain state is updated
+  reaction(
+    () => [store.year],
+    async titles => {
+      const res = await service.find({ query: { month: store.year } });
+      
+      console.log("reaction", res);
+    }
+  );
 
   return (
     <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
