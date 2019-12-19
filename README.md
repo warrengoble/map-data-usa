@@ -2,14 +2,15 @@
 
 ## Description
 
-This is an application demo and boilerplate to create a visual map of the USA with filters that can be used to display heatmap data for Counties and States.
+This is an application demo and boilerplate to create a visual map of the USA with filters that can be used to display heatmap data for Counties and States. Data for the project was initially going to be tested using Mortality rate date and show a heatmap at a county level.
 
 ## Design goals
 
 - Use serverless lambda type hosting such as Zeit Now and AWS Lambda.
-- Use FeathersJS and it's adapters for data stores. This will need to work wih serverless micro services API . (Incomplete)
+- Use FeathersJS and it's adapters for data stores. This will need to work with serverless micro services API . (Incomplete)
 - Try and use SSR (Server Side Render) when available.
 - MobX global context for state management.
+- Build a simple USA Map React component with county level data.
 - Tree based querying for nested data. (Incomplete)
 
 ## Demo
