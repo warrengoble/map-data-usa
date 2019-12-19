@@ -10,7 +10,6 @@ export default ({ title, ...props }) => {
             flex-direction: column;
             align-items: center;
             border: 1px solid black;
-            background: rgba(0, 0, 0, 0.2);
           }
 
           .slider {
@@ -19,7 +18,7 @@ export default ({ title, ...props }) => {
           }
         `}
       </style>
-      <div>{title}</div>
+      {title && <div>{title}</div>}
       <div className="slider">
         <Slider {...props} />
       </div>
