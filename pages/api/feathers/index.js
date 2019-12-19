@@ -6,13 +6,14 @@ export default async (req, res) => {
 
   const params = { query };
 
+  // FIXME will have to check if service methods exists
   switch (method) {
     case "GET": {
       data = await service.find(params);
       break;
     }
     case "POST": {
-      // TODO Disabled
+      // await service.create(body, params);
       break;
     }
   }
