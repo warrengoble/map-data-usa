@@ -42,6 +42,8 @@ http://ghdx.healthdata.org/record/ihme-data/united-states-mortality-rates-county
 
 ## Map Component
 
-Map component used from the following SVG data and a script was used to rebuild the data for a packaged React component.
+Map component used the following SVG data and a script was used to rebuild the data for a packaged React component.
 
 https://upload.wikimedia.org/wikipedia/commons/5/59/Usa_counties_large.svg
+
+https://github.com/warrengoble/convert-counties-svg2js
