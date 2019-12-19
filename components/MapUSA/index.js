@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ReactResizeDetector from "react-resize-detector";
 
 // import counties
-import usaCounties from "./usaCounties"; // Generated from converter. https://github.com/warrengoble/convert-counties-svg2js
+import usaCounties, { pathBorders, pathSeparator } from "./usaCounties"; // Generated from converter. https://github.com/warrengoble/convert-counties-svg2js
 import background from "./background.jpg";
 import County from "./County";
 
@@ -46,6 +46,8 @@ export default ({ children }) => {
         <g>
           <image href={background} width="990" height="627" opacity={0.5} />
           {children}
+          <path d={pathBorders} fill="none" stroke="black" strokeWidth={1} />
+          <path d={pathSeparator} fill="none" stroke="black" strokeWidth={1} />
         </g>
       </svg>
     </div>
