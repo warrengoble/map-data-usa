@@ -10,7 +10,7 @@ import County from "./County";
 const width = 989.98;
 const height = 627.07;
 
-export default ({ children }) => {
+export default ({ children, backgroundOpacity = 0.2 }) => {
   const [{ width: w, height: h }, setSize] = useState({ width, height });
 
   return (
@@ -44,7 +44,12 @@ export default ({ children }) => {
         xmlns="http://www.w3.org/2000/svg"
       >
         <g>
-          <image href={background} width="990" height="627" opacity={0.5} />
+          <image
+            href={background}
+            width="990"
+            height="627"
+            opacity={backgroundOpacity}
+          />
           {children}
           <path d={pathBorders} fill="none" stroke="black" strokeWidth={1} />
           <path d={pathSeparator} fill="none" stroke="black" strokeWidth={1} />
