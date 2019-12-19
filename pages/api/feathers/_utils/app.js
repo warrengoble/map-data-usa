@@ -9,17 +9,17 @@ const app = feathers();
 
 app.use("/feathers", {
   async find(params) {
-    // let rawdata = fs.readFileSync(`./db/mort.json`);
-    // let result = JSON.parse(rawdata);
+    let rawdata = fs.readFileSync(`./db/mort.json`);
+    let result = JSON.parse(rawdata);
 
     // Lookup JSON db
     // console.log("params", params);
     // const ret = result.filter(({ date }) => date === params.date);
 
-    // return result;
+    return result;
     // console.log("result");
 
-    return [];
+    // return [];
     // return ret;
   },
   async get(id, params) {
