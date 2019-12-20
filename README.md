@@ -7,7 +7,7 @@ This is an application demo and boilerplate to create a visual map of the USA wi
 ## Design goals
 
 - Use serverless lambda type hosting such as Zeit Now and AWS Lambda.
-- Use FeathersJS and it's adapters for data stores. This will need to work with serverless micro services API . (Incomplete)
+- Use FeathersJS and it's adapters for data stores. This will need to work with serverless micro services API.
 - Try and use SSR (Server Side Render) when available.
 - MobX global context for state management.
 - Build a simple USA Map React component with county level data.
@@ -50,15 +50,13 @@ NASA for providing the satellite overlay images.
 ## Notes & TODOS
 
 - Figure out what to do with datastore for lasting demo. Using serverless micro api and create working example. Serverless and Micro API documentation.
-  - Testing datastores AWS Aurora, AWS and Fauna.
+  - Testing datastores AWS Aurora, MongoDB, and Fauna.
     - https://fauna.com/
     - https://aws.amazon.com/rds/aurora/
     - https://github.com/graphql-editor/zeit-aurora-integration
-    - https://zeit.co/blog/now-dev
     - https://zeit.co/guides/deploying-a-mongodb-powered-api-with-node-and-now
-    -
 - Map component can be cut out and packaged into a reusable component on NPM.
-- FeatherJS serverless micro service is incomplete an missing hooks? Should also be cut out into a reusable component if possible. Will need to test some existing DB adapters. Some of these might not work with the serverless nature and require a re-write.
+- FeatherJS serverless micro service should be cut out into a reusable NPM component. Will need to test some existing DB adapters.
 - Extend database functionality and integrate reusable checkbox based search using something like Contexture.
   - https://github.com/smartprocure/contexture
 - Clean up map satellite image for Alaska and Hawaii.
