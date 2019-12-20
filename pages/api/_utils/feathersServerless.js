@@ -18,18 +18,6 @@ const methodFunc = {
 
 export default feathersApp => {
   const mixin = {
-    set(key, value) {
-      !this.variables && (this.variables = {});
-
-      this.variables = { ...this.variables, [key]: value };
-
-      return this;
-    },
-
-    get(key) {
-      return this.variables[key];
-    },
-
     setup(func) {
       this.setupFunc = func;
       return this;
