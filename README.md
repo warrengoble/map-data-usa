@@ -50,14 +50,15 @@ NASA for providing the satellite overlay images.
 ## Notes & TODOS
 
 - Figure out what to do with datastore for lasting demo. Using serverless micro api and create working example. Serverless and Micro API documentation.
-  - Testing datastores AWS Aurora and Fauna.
+  - Testing datastores AWS Aurora, AWS and Fauna.
     - https://fauna.com/
     - https://aws.amazon.com/rds/aurora/
-  - https://zeit.co/docs/v2/serverless-functions/introduction/
-  - https://github.com/zeit/micro
-  - Test with trying to pull directly from Github. Might be able to compact and cut up into a few files. https://raw.githubusercontent.com/warrengoble/quality-of-life-map/master/db/mort.json
+    - https://github.com/graphql-editor/zeit-aurora-integration
+    - https://zeit.co/blog/now-dev
+    - https://zeit.co/guides/deploying-a-mongodb-powered-api-with-node-and-now
+    -
 - Map component can be cut out and packaged into a reusable component on NPM.
-- FeatherJS serverless micro service is incomplete and should be cut out into a reusable component if possible. Will need to test some existing DB adapters. Some of these might not work with the serverless nature and require a re-write.
+- FeatherJS serverless micro service is incomplete an missing hooks? Should also be cut out into a reusable component if possible. Will need to test some existing DB adapters. Some of these might not work with the serverless nature and require a re-write.
 - Extend database functionality and integrate reusable checkbox based search using something like Contexture.
   - https://github.com/smartprocure/contexture
 - Clean up map satellite image for Alaska and Hawaii.
