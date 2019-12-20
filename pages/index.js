@@ -1,6 +1,6 @@
 import React from "react";
 import { useObserver } from "mobx-react-lite";
-import { entries } from "lodash/fp";
+import { entries, map, flow, reduce } from "lodash/fp";
 
 import MapUSA, { County } from "../components/MapUSA";
 import SliderControl from "../components/SliderControl";
@@ -60,14 +60,17 @@ export default () => {
         return (
           <div className="optionsContainer">
             <div className="optionsCheckBoxContainer">
-              {entries(store.filters).map(([key, checked]) => (
-                <ToggleControl
-                  key={key}
-                  title={key}
-                  onChange={() => store.toggleFilter(key)}
-                  checked={checked}
-                />
-              ))}
+              {flow(
+                entries,
+                map(([key, checked]) => (
+                  <ToggleControl
+                    key={key}
+                    title={key}
+                    onChange={() => store.toggleFilter(key)}
+                    checked={checked}
+                  />
+                ))
+              )(store.filters)}
             </div>
             <div className="optionsMainContainer">
               <div className="optionsSliderContainer">
@@ -77,16 +80,7 @@ export default () => {
                   max={2014}
                   step={null}
                   onChange={store.updateYear}
-                  marks={[
-                    1980,
-                    1985,
-                    1990,
-                    1995,
-                    2000,
-                    2005,
-                    2010,
-                    2014
-                  ].reduce(
+                  marks={reduce(
                     (a, v, i) => ({
                       ...a,
                       [v]: {
@@ -97,14 +91,14 @@ export default () => {
                       }
                     }),
                     {}
-                  )}
+                  )([1980, 1985, 1990, 1995, 2000, 2005, 2010, 2014])}
                   dots
                 />
               </div>
               <MapUSA>
-                {store.results.map(({ id, value }) => (
+                {map(({ id, value }) => (
                   <County key={id} id={id} fillOpacity={value} fill="red" />
-                ))}
+                ))(store.results)}
               </MapUSA>
             </div>
           </div>

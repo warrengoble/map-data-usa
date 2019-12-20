@@ -1,7 +1,7 @@
 import { reaction } from "mobx";
 import { useLocalStore, useStaticRendering } from "mobx-react-lite";
 import { createContext } from "react";
-import { values } from "lodash/fp";
+import { values, map, flow, reduce } from "lodash/fp";
 import feathers from "@feathersjs/feathers";
 import rest from "@feathersjs/rest-client";
 import axios from "axios";
@@ -28,15 +28,21 @@ export const StoreProvider = ({ children }) => {
 
   // Get filter values from database
   if (!isServer) {
-    serviceFilters.find().then(values => {
-      store.filters = values.reduce((a, v, i) => ({ ...a, [v]: true }), {});
+    serviceFilters.find().then(filters => {
+      store.filters = reduce((a, v, i) => ({ ...a, [v]: true }), {})(filters);
     });
   }
 
   // Trigger when state is updated.
   // TODO Add debounce / rate limit here for now.
   reaction(
-    () => [store.year, ...values(store.filters).map(v => v)],
+    () => [
+      store.year,
+      ...flow(
+        values,
+        map(v => v)
+      )(store.filters)
+    ],
     async () => {
       store.results = await serviceData.find({ query: {} });
     }

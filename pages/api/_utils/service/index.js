@@ -1,3 +1,5 @@
+import { map } from "lodash/fp";
+
 // Custom service
 
 // TODO Clean this up. Hack for demo
@@ -13,10 +15,10 @@ export default ({ Model }) => ({
       case "filters":
         return filters;
       case "data":
-        return countiesIds.map(v => ({
+        return map(v => ({
           id: Number(v),
           value: Math.random() * 0.5
-        }));
+        }))(countiesIds);
     }
   }
 });
