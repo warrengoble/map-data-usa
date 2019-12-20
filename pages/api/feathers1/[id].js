@@ -1,4 +1,4 @@
-import service from "./_utils/app";
+import service from "./_utils/feathers";
 
 export default async (req, res) => {
   const {

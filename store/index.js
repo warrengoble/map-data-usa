@@ -2,9 +2,11 @@ import { reaction } from "mobx";
 import { useLocalStore, useStaticRendering } from "mobx-react-lite";
 import { createContext } from "react";
 import { values } from "lodash/fp";
+import feathers from "@feathersjs/feathers";
+import rest from "@feathersjs/rest-client";
+import axios from "axios";
 
 import createStore from "./createStore";
-import feathers from "./feathers";
 
 // Handle SSR
 const isServer = typeof window === "undefined";
@@ -13,12 +15,20 @@ useStaticRendering(isServer);
 const StoreContext = createContext();
 
 export const StoreProvider = ({ children }) => {
-  const service = feathers();
-  const store = useLocalStore(createStore(service));
+  const app = feathers();
+  const restClient = rest("/api");
+
+  app.configure(restClient.axios(axios));
+
+  // Service endpoints
+  const serviceData = app.service("data");
+  const serviceFilters = app.service("filters");
+
+  const store = useLocalStore(createStore());
 
   // Get filter values from database
   if (!isServer) {
-    service.find({ query: { filters: true } }).then(values => {
+    serviceFilters.find().then(values => {
       store.filters = values.reduce((a, v, i) => ({ ...a, [v]: true }), {});
     });
   }
@@ -28,7 +38,7 @@ export const StoreProvider = ({ children }) => {
   reaction(
     () => [store.year, ...values(store.filters).map(v => v)],
     async () => {
-      store.results = await service.find({ query: {} });
+      store.results = await serviceData.find({ query: {} });
     }
   );
 

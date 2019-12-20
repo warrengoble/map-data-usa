@@ -1,4 +1,4 @@
-export default service =>
+export default () =>
   function() {
     return {
       results: [],
