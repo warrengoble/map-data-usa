@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 module.exports = {
   webpack: (config, { defaultLoaders, isServer }) => {
     config.module.rules.push({
