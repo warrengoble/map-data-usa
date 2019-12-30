@@ -1,7 +1,7 @@
 {
-  "name": "Demo",
+  "name": "quality-of-life-map",
   "version": 2,
   "env": {
-    "MONGODB_URI": "@demo-mongodb-uri"
+    "MONGODB_URI": "@mongodb_uri"
   }
 }
