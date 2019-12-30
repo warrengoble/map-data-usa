@@ -36,6 +36,7 @@ npm run dev
 - FeathersJS - https://feathersjs.com/
 - lodash/fp - https://github.com/lodash/lodash/wiki/FP-Guide
 - Ant Design - https://ant.design/
+- MongoDB - https://www.mongodb.com/
 
 ## Dataset & Acknowledgements
 
@@ -47,9 +48,35 @@ http://ghdx.healthdata.org/record/ihme-data/united-states-mortality-rates-county
 
 NASA for providing the satellite overlay images.
 
+## Serverless configs
+
+### Zeit Now
+
+You can add the `MONGODB_URI` as a secret using the following now command.
+
+```bash
+now secrets add mongodb_uri <secret mongodb uri>
+```
+
+Zeit now uses a file named `now.json` to set the ENV variable `MONGODB_URI`.
+
+```json
+{
+  "name": "quality-of-life-map",
+  "version": 2,
+  "env": {
+    "MONGODB_URI": "@mongodb_uri"
+  }
+}
+```
+
+### AWS Lambda
+
+TODO
+
 ## Notes & TODOS
 
-- Figure out what to do with datastore for lasting demo. Using serverless micro api and create working example. Serverless and Micro API documentation.
+- Figure out what to do with data store for lasting demo. Using serverless micro api and create working example. Serverless and Micro API documentation.
   - Testing datastores AWS Aurora, MongoDB, and Fauna.
     - https://fauna.com/
     - https://aws.amazon.com/rds/aurora/
