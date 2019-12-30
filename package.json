@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "populate": "node ./db/populateMongo"
   },
   "author": "Warren Goble",
   "license": "MIT",
