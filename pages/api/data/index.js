@@ -7,7 +7,7 @@ let cachedClient = null;
 
 export const app = feathersServerless(feathers());
 
-const connectToDatabase = async uri => {
+const connectMongoDB = async uri => {
   if (cachedClient) {
     return cachedClient;
   }
@@ -17,19 +17,15 @@ const connectToDatabase = async uri => {
     useUnifiedTopology: true
   });
 
-  console.log("Mongo connected");
-
   cachedClient = client;
   return client;
 };
 
 export default async (req, res) => {
-  const client = await connectToDatabase(process.env.MONGODB_URI);
+  const client = await connectMongoDB(process.env.MONGODB_URI);
   const db = await client.db("quality-of-life");
   const collection = await db.collection("data");
   const service = serviceMongoDB({ Model: collection });
-
-  console.log("Running Mongo query");
 
   app.use("data", service);
   app.service("data").hooks({
