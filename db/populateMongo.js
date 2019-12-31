@@ -49,7 +49,7 @@ const app = async () => {
 
   const rows = JSON.parse(fs.readFileSync(filePath));
 
-  rows.reduce(
+  await rows.reduce(
     async (
       a,
       {
@@ -123,6 +123,10 @@ const app = async () => {
     },
     Promise.resolve()
   );
+
+  console.log("Done.");
+
+  client.close();
 };
 
 app();
