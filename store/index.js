@@ -44,7 +44,7 @@ export const StoreProvider = ({ children }) => {
       )(store.filters)
     ],
     async () => {
-      store.results = await serviceData.find({ query: {} });
+      store.results = await serviceData.find({ query: { year: store.year } });
     }
   );
 
