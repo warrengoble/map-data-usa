@@ -60,6 +60,7 @@ const app = async () => {
         1990: value1990,
         1995: value1995,
         2000: value2000,
+        2005: value2005,
         2010: value2010,
         2014: value2014
       },
@@ -104,6 +105,13 @@ const app = async () => {
           category,
           year: 2000,
           value: value2000
+        }),
+        pushDoc({
+          collection,
+          countyId,
+          category,
+          year: 2005,
+          value: value2005
         }),
         pushDoc({
           collection,
