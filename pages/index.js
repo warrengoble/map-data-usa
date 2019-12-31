@@ -17,19 +17,19 @@ export default () => {
         {`
           .root {
             display: flex;
+            flex-direction: row;
             width: 100vw;
             height: 100vh;
             background: #222;
+            user-select: none;
           }
 
           .optionsContainer {
             display: flex;
-            flex-direction: row;
-            width: 100%;
+            flex-direction: column;
             font-weight: bold;
             color: #bbb;
-            user-select: none;
-            z-index: 1;
+            box-shadow: 2px 0 10px 0px black;
           }
 
           .optionsCheckBoxContainer {
@@ -38,41 +38,17 @@ export default () => {
             width: 300px;
             overflow: auto;
             background: #333;
-            box-shadow: 2px 0 10px 0px black;
-          }
-
-          .optionsMainContainer {
-            display: flex;
-            position: relative;
-            flex-direction: column;
-            flex-grow: 1;
           }
 
           .optionsSliderContainer {
-            width: 100%;
-            position: absolute;
             background: rgba(0, 0, 0, 0.6);
-            z-index: 2;
           }
         `}
       </style>
       {useObserver(() => {
         return (
-          <div className="optionsContainer">
-            <div className="optionsCheckBoxContainer">
-              {flow(
-                entries,
-                map(([key, checked]) => (
-                  <ToggleControl
-                    key={key}
-                    title={key}
-                    onChange={() => store.toggleFilter(key)}
-                    checked={checked}
-                  />
-                ))
-              )(store.filters)}
-            </div>
-            <div className="optionsMainContainer">
+          <>
+            <div className="optionsContainer">
               <div className="optionsSliderContainer">
                 <SliderControl
                   value={store.year}
@@ -85,7 +61,8 @@ export default () => {
                       ...a,
                       [v]: {
                         style: {
-                          color: "#bbb"
+                          color: "#bbb",
+                          fontSize: "0.75em"
                         },
                         label: v
                       }
@@ -95,13 +72,26 @@ export default () => {
                   dots
                 />
               </div>
-              <MapUSA>
-                {map(({ id, value }) => (
-                  <County key={id} id={id} fillOpacity={value} fill="red" />
-                ))(store.results)}
-              </MapUSA>
+              <div className="optionsCheckBoxContainer">
+                {flow(
+                  entries,
+                  map(([key, checked]) => (
+                    <ToggleControl
+                      key={key}
+                      title={key}
+                      onChange={() => store.toggleFilter(key)}
+                      checked={checked}
+                    />
+                  ))
+                )(store.filters)}
+              </div>
             </div>
-          </div>
+            <MapUSA>
+              {map(({ id, value }) => (
+                <County key={id} id={id} fillOpacity={value} fill="red" />
+              ))(store.results)}
+            </MapUSA>
+          </>
         );
       })}
     </div>
