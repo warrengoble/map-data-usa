@@ -1,3 +1,3 @@
-import { app } from "./";
+import index from "./";
 
-export default app.handler();
+export default index;
