@@ -39,14 +39,20 @@ export default feathersApp => {
 
         await this.setupCache;
 
-        const path = replace(prefix, "")(url);
+        const path = flow(
+          replace(prefix, ""),
+          split("?"),
+          ({ [0]: path }) => path
+        )(url);
 
         // Check if there is an ID
         // FIXME Another way to handle this?
         const { serviceName, id } = !feathersApp.service(path)
           ? {
               serviceName: flow(split("/"), slice(0, -1), join("/"))(path),
-              id: flow(split("/"), slice(-1, Infinity), join(""))(path)
+              id: decodeURIComponent(
+                flow(split("/"), slice(-1, Infinity), join(""))(path)
+              )
             }
           : { serviceName: path };
 
