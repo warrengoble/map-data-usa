@@ -87,9 +87,32 @@ export default () => {
               </div>
             </div>
             <MapUSA>
-              {map(({ id, value }) => (
-                <County key={id} id={id} fillOpacity={value} fill="red" />
-              ))(store.results)}
+              {flow(
+                reduce(
+                  (
+                    { values = [], min = Infinity, max = -Infinity },
+                    { _id: id, value }
+                  ) => {
+                    return {
+                      values: [...values, { id, value }],
+                      min: value < min ? value : min,
+                      max: value > max ? value : max
+                    };
+                  },
+                  {}
+                ),
+                ({ values = [], min, max }) => {
+                  return map(({ id, value }) => ({
+                    id,
+                    value: (value - min) / (max - min)
+                  }))(values);
+                },
+                map(({ id, value }) => {
+                  return (
+                    <County key={id} id={id} fillOpacity={value} fill="red" />
+                  );
+                })
+              )(store.results)}
             </MapUSA>
           </>
         );
