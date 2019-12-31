@@ -28,7 +28,7 @@ npm run dev
 # Goto: http://localhost:3000
 ```
 
-## Packages
+## Major technology
 
 - NextJS - https://nextjs.org/
 - React - https://reactjs.org/
@@ -37,16 +37,6 @@ npm run dev
 - lodash/fp - https://github.com/lodash/lodash/wiki/FP-Guide
 - Ant Design - https://ant.design/
 - MongoDB - https://www.mongodb.com/
-
-## Dataset & Acknowledgements
-
-IHME United States Mortality Rates by County 1980-2014: National - All. (Deaths per 100,000 population)
-
-https://www.kaggle.com/IHME/us-countylevel-mortality
-
-http://ghdx.healthdata.org/record/ihme-data/united-states-mortality-rates-county-1980-2014
-
-NASA for providing the satellite overlay images.
 
 ## Serverless configs
 
@@ -74,16 +64,15 @@ Zeit now uses a file named `now.json` to set the ENV variable `MONGODB_URI`.
 
 TODO
 
+## MongoDB
+
+Mortality data set is stored using in a MongoDB collection. For local development you can use a `.env` file and set MONGODB_URI there. Data can be populated into the database by running `npm run populate`.
+
 ## Notes & TODOS
 
-- Figure out what to do with data store for lasting demo. Using serverless micro api and create working example. Serverless and Micro API documentation.
-  - Testing datastores AWS Aurora, MongoDB, and Fauna.
-    - https://fauna.com/
-    - https://aws.amazon.com/rds/aurora/
-    - https://github.com/graphql-editor/zeit-aurora-integration
-    - https://zeit.co/guides/deploying-a-mongodb-powered-api-with-node-and-now
+- Using MongoDB server for data store.
 - Map component can be cut out and packaged into a reusable component on NPM.
-- FeatherJS serverless micro service should be cut out into a reusable NPM component. Will need to test some existing DB adapters.
+- FeatherJS serverless micro service should be cut out into a reusable NPM component.
 - Extend database functionality and integrate reusable checkbox based search using something like Contexture.
   - https://github.com/smartprocure/contexture
 - Clean up map satellite image for Alaska and Hawaii.
@@ -96,3 +85,13 @@ Map component used the following SVG data and a script was used to rebuild the d
 
 - https://github.com/warrengoble/convert-counties-svg2js
 - https://upload.wikimedia.org/wikipedia/commons/5/59/Usa_counties_large.svg
+
+## Dataset & Acknowledgements
+
+IHME United States Mortality Rates by County 1980-2014: National - All. (Deaths per 100,000 population)
+
+https://www.kaggle.com/IHME/us-countylevel-mortality
+
+http://ghdx.healthdata.org/record/ihme-data/united-states-mortality-rates-county-1980-2014
+
+NASA for providing the satellite overlay images.
