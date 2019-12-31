@@ -17,6 +17,8 @@ const connectToDatabase = async uri => {
     useUnifiedTopology: true
   });
 
+  console.log("Mongo connected");
+
   cachedClient = client;
   return client;
 };
@@ -26,6 +28,8 @@ export default async (req, res) => {
   const db = await client.db("quality-of-life");
   const collection = await db.collection("data");
   const service = serviceMongoDB({ Model: collection });
+
+  console.log("Running Mongo query");
 
   app.use("data", service);
   app.service("data").hooks({
