@@ -90,28 +90,25 @@ export default () => {
               {flow(
                 reduce(
                   (
-                    { values = [], min = Infinity, max = -Infinity },
+                    { values = [], minValue = Infinity, maxValue = -Infinity },
                     { _id: id, value }
-                  ) => {
-                    return {
-                      values: [...values, { id, value }],
-                      min: value < min ? value : min,
-                      max: value > max ? value : max
-                    };
-                  },
+                  ) => ({
+                    values: [...values, { id, value }],
+                    // minValue: min(minValue, value),
+                    // maxValue: max(maxValue, value)
+                    minValue: value < minValue ? value : minValue,
+                    maxValue: value > maxValue ? value : maxValue
+                  }),
                   {}
                 ),
-                ({ values = [], min, max }) => {
-                  return map(({ id, value }) => ({
+                ({ values = [], minValue, maxValue }) =>
+                  map(({ id, value }) => ({
                     id,
-                    value: (value - min) / (max - min)
-                  }))(values);
-                },
-                map(({ id, value }) => {
-                  return (
-                    <County key={id} id={id} fillOpacity={value} fill="red" />
-                  );
-                })
+                    value: (value - minValue) / (maxValue - minValue)
+                  }))(values),
+                map(({ id, value }) => (
+                  <County key={id} id={id} fillOpacity={value} fill="red" />
+                ))
               )(store.results)}
             </MapUSA>
           </>
