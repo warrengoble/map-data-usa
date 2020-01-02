@@ -1,7 +1,9 @@
 import feathers from "@feathersjs/feathers";
-import feathersServerless from "../_utils/feathersServerless";
 import { MongoClient, ObjectID } from "mongodb";
 import serviceMongoDB from "feathers-mongodb";
+import { toPairs, pipe, filter, map } from "lodash/fp";
+
+import feathersServerless from "../_utils/feathersServerless";
 
 let cachedClient = null;
 
@@ -33,15 +35,29 @@ export default async (req, res) => {
       async find(context) {
         const { query = {} } = context.params;
 
-        const year = Number(query.year);
+        const year = Number(query.year); // FIXME Move this to filters
+        const filters = JSON.parse(query.filters || "{}");
 
-        // TODO Add filters
-        const results = await context.service.Model.aggregate([
-          { $match: { year } },
-          {
-            $group: { _id: "$countyId", value: { $sum: "$value" } }
-          }
-        ]).toArray();
+        const matchFilters = pipe(
+          toPairs,
+          filter(([, v]) => v === true),
+          map(([v]) => ({ category: v }))
+        )(filters);
+
+        const results =
+          matchFilters.length > 0
+            ? await context.service.Model.aggregate([
+                {
+                  $match: {
+                    year
+                  }
+                },
+                { $match: { $or: matchFilters } },
+                {
+                  $group: { _id: "$countyId", value: { $sum: "$value" } }
+                }
+              ]).toArray()
+            : [];
 
         context.result = results;
 
