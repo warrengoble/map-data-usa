@@ -58,7 +58,7 @@ export default ({ children, backgroundOpacity = 0.2 }) => {
           />
           {children}
           <path d={pathBorders} fill="none" stroke="black" strokeWidth={1} />
-          <path d={pathSeparator} fill="none" stroke="black" strokeWidth={1} />
+          <path d={pathSeparator} fill="none" stroke="#222" strokeWidth={3} />
         </g>
       </svg>
     </div>
