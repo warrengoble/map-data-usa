@@ -1,15 +1,21 @@
 import React from "react";
 import { useObserver } from "mobx-react-lite";
-import { entries, map, flow, reduce } from "lodash/fp";
+import { entries, map, flow, values, reduce, every } from "lodash/fp";
 
 import MapUSA, { County } from "../components/MapUSA";
 import SliderControl from "../components/SliderControl";
 import ToggleControl from "../components/ToggleControl";
+import Splash from "../components/Splash";
 
 import { useStore } from "../store";
 
 export default () => {
   const store = useStore();
+
+  const showSplash = flow(
+    values,
+    every(v => !v)
+  )(store.filters);
 
   return (
     <div className="root">
@@ -42,6 +48,13 @@ export default () => {
 
           .optionsSliderContainer {
             background: rgba(0, 0, 0, 0.6);
+          }
+
+          .mapContainer {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
           }
         `}
       </style>
@@ -86,31 +99,36 @@ export default () => {
                 )(store.filters)}
               </div>
             </div>
-            <MapUSA>
-              {flow(
-                reduce(
-                  (
-                    { values = [], minValue = Infinity, maxValue = -Infinity },
-                    { _id: id, value }
-                  ) => ({
-                    values: [...values, { id, value }],
-                    // minValue: min(minValue, value),
-                    // maxValue: max(maxValue, value)
-                    minValue: value < minValue ? value : minValue,
-                    maxValue: value > maxValue ? value : maxValue
-                  }),
-                  {}
-                ),
-                ({ values = [], minValue, maxValue }) =>
-                  map(({ id, value }) => ({
-                    id,
-                    value: (value - minValue) / (maxValue - minValue)
-                  }))(values),
-                map(({ id, value }) => (
-                  <County key={id} id={id} fillOpacity={value} fill="red" />
-                ))
-              )(store.results)}
-            </MapUSA>
+            <div className="mapContainer">
+              <MapUSA>
+                {flow(
+                  reduce(
+                    (
+                      {
+                        values = [],
+                        minValue = Infinity,
+                        maxValue = -Infinity
+                      },
+                      { _id: id, value }
+                    ) => ({
+                      values: [...values, { id, value }],
+                      minValue: value < minValue ? value : minValue,
+                      maxValue: value > maxValue ? value : maxValue
+                    }),
+                    {}
+                  ),
+                  ({ values = [], minValue, maxValue }) =>
+                    map(({ id, value }) => ({
+                      id,
+                      value: (value - minValue) / (maxValue - minValue)
+                    }))(values),
+                  map(({ id, value }) => (
+                    <County key={id} id={id} fillOpacity={value} fill="red" />
+                  ))
+                )(store.results)}
+              </MapUSA>
+              {showSplash && <Splash />}
+            </div>
           </>
         );
       })}
