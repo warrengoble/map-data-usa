@@ -2,6 +2,8 @@ import { reaction, toJS } from "mobx";
 import { useLocalStore, useStaticRendering } from "mobx-react-lite";
 import { createContext } from "react";
 import { values, compact, flow, reduce } from "lodash/fp";
+import { debounce } from "lodash";
+
 import feathers from "@feathersjs/feathers";
 import rest from "@feathersjs/rest-client";
 import axios from "axios";
@@ -34,17 +36,16 @@ export const StoreProvider = ({ children }) => {
   }
 
   // Trigger when state is updated.
-  // TODO Add debounce / rate limit here for now.
   reaction(
     () => [store.year, ...flow(values, compact)(store.filters)],
-    async () => {
+    debounce(async () => {
       store.results = await serviceData.find({
         query: {
           year: store.year, // FIXME move this to f
           filters: JSON.stringify(toJS(store.filters))
         }
       });
-    }
+    }, 500)
   );
 
   return (
