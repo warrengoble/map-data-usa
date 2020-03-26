@@ -1,6 +1,7 @@
 import React from "react";
 import { useObserver } from "mobx-react-lite";
 import { entries, map, flow, values, reduce, every } from "lodash/fp";
+import { Button } from "antd";
 
 import MapUSA, { County } from "../components/MapUSA";
 import SliderControl from "../components/SliderControl";
@@ -50,6 +51,11 @@ export default () => {
             background: rgba(0, 0, 0, 0.6);
           }
 
+          .optionsButtons {
+            display: flex;
+            justify-content: center;
+          }
+
           .mapContainer {
             position: relative;
             width: 100%;
@@ -85,6 +91,20 @@ export default () => {
                   dots
                 />
               </div>
+              <div className="optionsButtons">
+                <Button
+                  style={{ flex: 0.5 }}
+                  onClick={() => store.clearFilters()}
+                >
+                  Clear
+                </Button>
+                <Button
+                  style={{ flex: 0.5 }}
+                  onClick={() => store.selectAllFilters()}
+                >
+                  Select All
+                </Button>
+              </div>
               <div className="optionsCheckBoxContainer">
                 {flow(
                   entries,
@@ -101,31 +121,32 @@ export default () => {
             </div>
             <div className="mapContainer">
               <MapUSA>
-                {flow(
-                  reduce(
-                    (
-                      {
-                        values = [],
-                        minValue = Infinity,
-                        maxValue = -Infinity
-                      },
-                      { _id: id, value }
-                    ) => ({
-                      values: [...values, { id, value }],
-                      minValue: value < minValue ? value : minValue,
-                      maxValue: value > maxValue ? value : maxValue
-                    }),
-                    {}
-                  ),
-                  ({ values = [], minValue, maxValue }) =>
-                    map(({ id, value }) => ({
-                      id,
-                      value: (value - minValue) / (maxValue - minValue)
-                    }))(values),
-                  map(({ id, value }) => (
-                    <County key={id} id={id} fillOpacity={value} fill="red" />
-                  ))
-                )(store.results)}
+                {!showSplash &&
+                  flow(
+                    reduce(
+                      (
+                        {
+                          values = [],
+                          minValue = Infinity,
+                          maxValue = -Infinity
+                        },
+                        { _id: id, value }
+                      ) => ({
+                        values: [...values, { id, value }],
+                        minValue: value < minValue ? value : minValue,
+                        maxValue: value > maxValue ? value : maxValue
+                      }),
+                      {}
+                    ),
+                    ({ values = [], minValue, maxValue }) =>
+                      map(({ id, value }) => ({
+                        id,
+                        value: (value - minValue) / (maxValue - minValue)
+                      }))(values),
+                    map(({ id, value }) => (
+                      <County key={id} id={id} fillOpacity={value} fill="red" />
+                    ))
+                  )(store.results)}
               </MapUSA>
               {showSplash && <Splash />}
             </div>
