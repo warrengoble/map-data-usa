@@ -3,6 +3,7 @@ import { flow, toPairs, map, fromPairs } from "lodash/fp";
 export default () =>
   function() {
     return {
+      loading: false,
       results: [],
       year: 1980,
       filters: {},

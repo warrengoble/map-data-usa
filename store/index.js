@@ -39,12 +39,14 @@ export const StoreProvider = ({ children }) => {
   reaction(
     () => [store.year, ...flow(values, compact)(store.filters)],
     debounce(async () => {
+      store.loading = true;
       store.results = await serviceData.find({
         query: {
-          year: store.year, // FIXME move this to f
+          year: store.year, // FIXME move this
           filters: JSON.stringify(toJS(store.filters))
         }
       });
+      store.loading = false;
     }, 500)
   );
 

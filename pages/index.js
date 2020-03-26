@@ -7,6 +7,7 @@ import MapUSA, { County } from "../components/MapUSA";
 import SliderControl from "../components/SliderControl";
 import ToggleControl from "../components/ToggleControl";
 import Splash from "../components/Splash";
+import LoaderSpin from "../components/LoaderSpin";
 
 import { useStore } from "../store";
 
@@ -18,6 +19,7 @@ export default () => {
     every(v => !v)
   )(store.filters);
 
+  console.log("store.loading", store.loading);
   return (
     <div className="root">
       <style jsx>
@@ -149,6 +151,7 @@ export default () => {
                   )(store.results)}
               </MapUSA>
               {showSplash && <Splash />}
+              {store.loading && <LoaderSpin />}
             </div>
           </>
         );
