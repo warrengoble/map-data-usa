@@ -61,7 +61,7 @@ export default ({ children, backgroundOpacity = 0.2, transform }) => {
             opacity={backgroundOpacity}
           />
           {children}
-          <path d={pathBorders} fill="none" stroke="black" strokeWidth={1} />
+          <path d={pathBorders} fill="none" stroke="black" strokeWidth={0.25} />
           <path d={pathSeparator} fill="none" stroke="#222" strokeWidth={3} />
         </g>
       </svg>

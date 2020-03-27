@@ -8,7 +8,7 @@ export default ({ id, ...props }) => {
   return path ? (
     <path
       d={path}
-      strokeWidth={1}
+      strokeWidth={0.1}
       strokeOpacity={0.2}
       stroke="black"
       {...props}
