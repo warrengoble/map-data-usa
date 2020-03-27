@@ -12,7 +12,7 @@ import {
 import background from "./background.jpg";
 import County from "./County";
 
-export default ({ children, backgroundOpacity = 0.2 }) => {
+export default ({ children, backgroundOpacity = 0.2, transform }) => {
   const [{ width: w, height: h }, setSize] = useState({
     width: mapWidth,
     height: mapHeight
@@ -32,6 +32,10 @@ export default ({ children, backgroundOpacity = 0.2 }) => {
           .overlay {
             position: absolute;
           }
+
+          .map {
+            cursor: pointer;
+          }
         `}
       </style>
       <ReactResizeDetector
@@ -49,7 +53,7 @@ export default ({ children, backgroundOpacity = 0.2 }) => {
         version="1.0"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <g>
+        <g className="map" transform={transform}>
           <image
             href={background}
             width={mapWidth}

@@ -6,6 +6,9 @@ import { Button } from "antd";
 import MapUSA, { County } from "../components/MapUSA";
 import SliderControl from "../components/SliderControl";
 import ToggleControl from "../components/ToggleControl";
+
+import MapContainer from "../containers/MapContainer";
+
 import Splash from "../components/Splash";
 import LoaderSpin from "../components/LoaderSpin";
 
@@ -14,12 +17,6 @@ import { useStore } from "../store";
 export default () => {
   const store = useStore();
 
-  const showSplash = flow(
-    values,
-    every(v => !v)
-  )(store.filters);
-
-  console.log("store.loading", store.loading);
   return (
     <div className="root">
       <style jsx>
@@ -58,15 +55,18 @@ export default () => {
             justify-content: center;
           }
 
-          .mapContainer {
+          .mapGroup {
             position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
+            flex: 1;
           }
         `}
       </style>
       {useObserver(() => {
+        const showSplash = flow(
+          values,
+          every(v => !v)
+        )(store.filters);
+
         return (
           <>
             <div className="optionsContainer">
@@ -121,8 +121,8 @@ export default () => {
                 )(store.filters)}
               </div>
             </div>
-            <div className="mapContainer">
-              <MapUSA>
+            <div className="mapGroup">
+              <MapContainer>
                 {!showSplash &&
                   flow(
                     reduce(
@@ -149,7 +149,7 @@ export default () => {
                       <County key={id} id={id} fillOpacity={value} fill="red" />
                     ))
                   )(store.results)}
-              </MapUSA>
+              </MapContainer>
               {showSplash && <Splash />}
               {store.loading && <LoaderSpin />}
             </div>
