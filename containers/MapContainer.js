@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Slider } from "antd";
 import { clamp } from "lodash/fp";
+import ReactResizeDetector from "react-resize-detector";
 
 import MapUSA from "../components/MapUSA";
 
@@ -28,17 +29,23 @@ const zoomTransform = (transformMatrix, scale, x, y) => {
   return newTransform;
 };
 
-const zoomClamped = value => clamp(1, 4, value);
+const zoomClamped = (value) => clamp(1, 4, value);
 
 export default ({ children = [] }) => {
   const [zoom, setZoom] = useState(1);
   const [[posX, posY], setPosition] = useState([0, 0]);
+  const [{ width, height }, setSize] = useState({
+    width: 200,
+    height: 100,
+  });
+
+  console.log(posX, posY);
 
   const transformMatrix = zoomTransform(
     panTransform([1, 0, 0, 1, 0, 0], posX, posY),
     zoom,
-    -posX,
-    -posY
+    -posX + width / 2,
+    -posY + height / 2
   );
 
   return (
@@ -84,20 +91,34 @@ export default ({ children = [] }) => {
           }
         `}
       </style>
+      <ReactResizeDetector
+        handleWidth
+        handleHeight
+        onResize={(width, height) => {
+          setSize({ width, height });
+        }}
+      />
       <div
         className="mapContainer"
-        onMouseMove={e => {
+        onMouseMove={(e) => {
           const { movementX, movementY, buttons } = e;
 
           if (buttons === 1) {
-            setPosition([posX + movementX, posY + movementY]);
+            setPosition([
+              posX + movementX / (zoom * 2),
+              posY + movementY / (zoom * 2),
+            ]);
           }
         }}
-        onWheel={({ deltaY, clientX, clientY }) => {
-          setZoom(zoomClamped(zoom - deltaY * 0.01));
+        onWheel={({ deltaY }) => {
+          setZoom(zoomClamped(zoom - deltaY * 0.001));
         }}
       >
-        <MapUSA transform={"matrix(" + transformMatrix.join(" ") + ")"}>
+        <MapUSA
+          transform={"matrix(" + transformMatrix.join(" ") + ")"}
+          width={width}
+          height={height}
+        >
           {children}
         </MapUSA>
       </div>
@@ -107,9 +128,9 @@ export default ({ children = [] }) => {
           <Slider
             value={zoom}
             min={1}
-            max={4}
+            max={5}
             step={0.01}
-            onChange={v => {
+            onChange={(v) => {
               setZoom(zoomClamped(v));
             }}
             tooltipVisible
