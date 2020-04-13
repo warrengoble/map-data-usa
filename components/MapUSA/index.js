@@ -1,23 +1,23 @@
-import React, { useState } from "react";
-import ReactResizeDetector from "react-resize-detector";
+import React from "react";
 
 import {
   pathBorders,
   pathSeparator,
   mapWidth,
   mapHeight,
-  counties as usaCounties
+  counties as usaCounties,
 } from "./usaCounties.json"; // Generated from converter. https://github.com/warrengoble/convert-counties-svg2js
 
 import background from "./background.jpg";
 import County from "./County";
 
-export default ({ children, backgroundOpacity = 0.2, transform }) => {
-  const [{ width: w, height: h }, setSize] = useState({
-    width: mapWidth,
-    height: mapHeight
-  });
-
+export default ({
+  children,
+  backgroundOpacity = 0.2,
+  transform,
+  width,
+  height,
+}) => {
   return (
     <div className="container">
       <style jsx>
@@ -38,18 +38,11 @@ export default ({ children, backgroundOpacity = 0.2, transform }) => {
           }
         `}
       </style>
-      <ReactResizeDetector
-        handleWidth
-        handleHeight
-        onResize={(width, height) => {
-          setSize({ width, height });
-        }}
-      />
+
       <svg
         className="overlay"
-        viewBox={`0 0 ${mapWidth} ${mapHeight}`}
-        width={w}
-        height={h}
+        width={width}
+        height={height}
         version="1.0"
         xmlns="http://www.w3.org/2000/svg"
       >
