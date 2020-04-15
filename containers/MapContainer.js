@@ -29,15 +29,15 @@ const zoomTransform = (transformMatrix, scale, x, y) => {
   return newTransform;
 };
 
-const zoomClamped = (value) => clamp(1, 4, value);
-
-export default ({ children = [] }) => {
+export default ({ children = [], minZoom = 0.5, maxZoom = 5 }) => {
   const [zoom, setZoom] = useState(1);
   const [[posX, posY], setPosition] = useState([0, 0]);
   const [{ width, height }, setSize] = useState({
     width: 200,
     height: 100,
   });
+
+  const zoomClamped = (value) => clamp(minZoom, maxZoom, value);
 
   console.log(posX, posY);
 
@@ -81,13 +81,18 @@ export default ({ children = [] }) => {
           .toolZoom {
             display: flex;
             color: white;
-            flex-direction: column;
+            flex-direction: row;
             justify-content: center;
+            align-items: center;
             padding: 0px 40px 0px 40px;
             flex-grow: 0.7;
             pointer-events: auto;
             background: rgba(0, 0, 0, 0.6);
-            height: 120px;
+            height: 3em;
+          }
+
+          .zoomSlider {
+            flex: 1;
           }
         `}
       </style>
@@ -125,16 +130,18 @@ export default ({ children = [] }) => {
       <div className="toolOverlay">
         <div className="toolZoom">
           <div style={{ alignSelf: "center" }}>Zoom</div>
-          <Slider
-            value={zoom}
-            min={1}
-            max={5}
-            step={0.01}
-            onChange={(v) => {
-              setZoom(zoomClamped(v));
-            }}
-            tooltipVisible
-          />
+          <div className="zoomSlider">
+            <Slider
+              value={zoom}
+              min={minZoom}
+              max={maxZoom}
+              step={0.01}
+              onChange={(v) => {
+                setZoom(zoomClamped(v));
+              }}
+              tooltipVisible={false}
+            />
+          </div>
         </div>
       </div>
     </div>
