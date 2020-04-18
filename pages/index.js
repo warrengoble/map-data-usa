@@ -1,11 +1,11 @@
 import React from "react";
 import { useObserver } from "mobx-react-lite";
-import { entries, map, flow, values, reduce, every } from "lodash/fp";
-import { Button } from "antd";
+import { get, set } from "mobx";
+import { pipe, map, toPairs, compact, reduce, values, every } from "lodash/fp";
 
-import MapUSA, { County } from "../components/MapUSA";
-import SliderControl from "../components/SliderControl";
-import ToggleControl from "../components/ToggleControl";
+import { County } from "../components/MapUSA";
+import FilterCheckBox from "../components/FilterCheckBox";
+import FilterSlider from "../components/FilterSlider";
 
 import MapContainer from "../containers/MapContainer";
 
@@ -36,23 +36,7 @@ export default () => {
             font-weight: bold;
             color: #bbb;
             box-shadow: 2px 0 10px 0px black;
-          }
-
-          .optionsCheckBoxContainer {
-            display: flex;
-            flex-direction: column;
-            width: 300px;
-            overflow: auto;
-            background: #333;
-          }
-
-          .optionsSliderContainer {
-            background: rgba(0, 0, 0, 0.6);
-          }
-
-          .optionsButtons {
-            display: flex;
-            justify-content: center;
+            flex-self: 20%;
           }
 
           .mapGroup {
@@ -62,88 +46,95 @@ export default () => {
         `}
       </style>
       {useObserver(() => {
-        const showSplash = flow(
-          values,
-          every(v => !v)
+        const showSplash = pipe(
+          toPairs,
+          reduce(
+            (a, [k, { filterValues = {} }]) => [...a, ...values(filterValues)],
+            []
+          ),
+          every((v) => !v)
         )(store.filters);
 
         return (
           <>
             <div className="optionsContainer">
-              <div className="optionsSliderContainer">
-                <SliderControl
-                  value={store.year}
-                  min={1980}
-                  max={2014}
-                  step={null}
-                  onChange={store.updateYear}
-                  marks={reduce(
-                    (a, v, i) => ({
-                      ...a,
-                      [v]: {
-                        style: {
-                          color: "#bbb",
-                          fontSize: "0.75em"
-                        },
-                        label: v
-                      }
-                    }),
-                    {}
-                  )([1980, 1985, 1990, 1995, 2000, 2005, 2010, 2014])}
-                  dots
-                />
-              </div>
-              <div className="optionsButtons">
-                <Button
-                  style={{ flex: 0.5 }}
-                  onClick={() => store.clearFilters()}
-                >
-                  Clear
-                </Button>
-                <Button
-                  style={{ flex: 0.5 }}
-                  onClick={() => store.selectAllFilters()}
-                >
-                  Select All
-                </Button>
-              </div>
-              <div className="optionsCheckBoxContainer">
-                {flow(
-                  entries,
-                  map(([key, checked]) => (
-                    <ToggleControl
-                      key={key}
-                      title={key}
-                      onChange={() => store.toggleFilter(key)}
-                      checked={checked}
-                    />
-                  ))
-                )(store.filters)}
-              </div>
+              {pipe(
+                toPairs,
+                map(([name, { type, ui, filterValues }]) => {
+                  if (ui === "checkbox") {
+                    return (
+                      <FilterCheckBox
+                        name={name}
+                        filterValues={filterValues}
+                        onChange={(key) => {
+                          const filter = get(store.filters, name);
+                          set(store.filters, name, {
+                            ...filter,
+                            filterValues: {
+                              ...filter.filterValues,
+                              [key]: !filter.filterValues[key],
+                            },
+                          });
+                        }}
+                      />
+                    );
+                  }
+
+                  if (ui === "slider" && type === "number") {
+                    return (
+                      <FilterCheckBox
+                        name={name}
+                        filterValues={filterValues}
+                        onChange={(key) => {
+                          const filter = get(store.filters, name);
+                          set(store.filters, name, {
+                            ...filter,
+                            filterValues: {
+                              ...filter.filterValues,
+                              [key]: !filter.filterValues[key],
+                            },
+                          });
+                        }}
+                      />
+                    );
+                    // return (
+                    //   <FilterSlider
+                    //     name={name}
+                    //     filterValues={filterValues}
+                    //     onChange={(key) => {
+                    //       // Select only single
+                    //       console.log("key", key, name);
+                    //     }}
+                    //   />
+                    // );
+                  }
+                }),
+                compact
+              )(store.filters)}
             </div>
             <div className="mapGroup">
               <MapContainer>
                 {!showSplash &&
-                  flow(
+                  pipe(
                     reduce(
                       (
                         {
                           values = [],
                           minValue = Infinity,
-                          maxValue = -Infinity
+                          maxValue = -Infinity,
                         },
                         { _id: id, value }
                       ) => ({
                         values: [...values, { id, value }],
                         minValue: value < minValue ? value : minValue,
-                        maxValue: value > maxValue ? value : maxValue
+                        maxValue: value > maxValue ? value : maxValue,
                       }),
                       {}
                     ),
                     ({ values = [], minValue, maxValue }) =>
                       map(({ id, value }) => ({
                         id,
-                        value: (value - minValue) / (maxValue - minValue)
+                        value: (value - minValue) / (maxValue - minValue),
                       }))(values),
                     map(({ id, value }) => (
                       <County key={id} id={id} fillOpacity={value} fill="red" />

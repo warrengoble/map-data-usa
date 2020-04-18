@@ -1,7 +1,7 @@
 import feathers from "@feathersjs/feathers";
-import { MongoClient, ObjectID } from "mongodb";
+import { MongoClient } from "mongodb";
 import serviceMongoDB from "feathers-mongodb";
-import { toPairs, pipe, filter, map } from "lodash/fp";
+import { toPairs, pipe, filter, map, flattenDepth } from "lodash/fp";
 
 import feathersServerless from "../_utils/feathersServerless";
 
@@ -9,14 +9,15 @@ let cachedClient = null;
 
 export const app = feathersServerless(feathers());
 
-const connectMongoDB = async uri => {
+// Put in _utils
+const connectMongoDB = async (uri) => {
   if (cachedClient) {
     return cachedClient;
   }
 
   const client = await MongoClient.connect(uri, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   });
 
   cachedClient = client;
@@ -24,6 +25,7 @@ const connectMongoDB = async uri => {
 };
 
 export default async (req, res) => {
+  // Reusable code
   const client = await connectMongoDB(process.env.MONGODB_URI);
   const db = await client.db("quality-of-life");
   const collection = await db.collection("data");
@@ -35,35 +37,36 @@ export default async (req, res) => {
       async find(context) {
         const { query = {} } = context.params;
 
-        const year = Number(query.year); // FIXME Move this to filters
         const filters = JSON.parse(query.filters || "{}");
 
+        // Match
         const matchFilters = pipe(
           toPairs,
-          filter(([, v]) => v === true),
-          map(([v]) => ({ category: v }))
+          map(([k, { type, filterValues = {} }]) =>
+            pipe(
+              toPairs,
+              filter(([, v]) => v === true),
+              map(([v]) => ({ [k]: type === "number" ? Number(v) : v }))
+            )(filterValues)
+          )
+          // flattenDepth(1)
         )(filters);
 
         const results =
           matchFilters.length > 0
             ? await context.service.Model.aggregate([
+                ...matchFilters.map((v) => ({ $match: { $or: v } })),
                 {
-                  $match: {
-                    year
-                  }
+                  $group: { _id: "$countyId", value: { $sum: "$value" } },
                 },
-                { $match: { $or: matchFilters } },
-                {
-                  $group: { _id: "$countyId", value: { $sum: "$value" } }
-                }
               ]).toArray()
             : [];
-
         context.result = results;
 
         return context;
       },
       // Disable writing and saving for example
+      // TODO Cut this up so it's reusable?
       async create(context) {
         context.result = {};
         return context;
@@ -79,8 +82,8 @@ export default async (req, res) => {
       async remove(context) {
         context.result = {};
         return context;
-      }
-    }
+      },
+    },
   });
 
   app.handler()(req, res);

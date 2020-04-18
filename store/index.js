@@ -1,7 +1,7 @@
 import { reaction, toJS } from "mobx";
 import { useLocalStore, useStaticRendering } from "mobx-react-lite";
 import { createContext } from "react";
-import { values, compact, flow, reduce } from "lodash/fp";
+import { values, pipe, map } from "lodash/fp";
 import { debounce } from "lodash";
 
 import feathers from "@feathersjs/feathers";
@@ -30,21 +30,25 @@ export const StoreProvider = ({ children }) => {
 
   // Get filter values from database
   if (!isServer) {
-    serviceFilters.find().then(filters => {
-      store.filters = reduce((a, v, i) => ({ ...a, [v]: false }), {})(filters);
+    serviceFilters.find().then((filters) => {
+      store.filters = filters;
     });
   }
 
-  // Trigger when state is updated.
+  // Trigger when filters are updated.
   reaction(
-    () => [store.year, ...flow(values, compact)(store.filters)],
+    () => [
+      ...pipe(
+        values,
+        map(({ filterValues }) => filterValues)
+      )(store.filters),
+    ],
     debounce(async () => {
       store.loading = true;
       store.results = await serviceData.find({
         query: {
-          year: store.year, // FIXME move this
-          filters: JSON.stringify(toJS(store.filters))
-        }
+          filters: JSON.stringify(toJS(store.filters)),
+        },
       });
       store.loading = false;
     }, 500)
