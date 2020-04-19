@@ -5,12 +5,11 @@ import { pipe, map, toPairs, compact, reduce, values, every } from "lodash/fp";
 
 import { County } from "../components/MapUSA";
 import FilterCheckBox from "../components/FilterCheckBox";
-import FilterSlider from "../components/FilterSlider";
-
-import MapContainer from "../containers/MapContainer";
-
+// import FilterSlider from "../components/FilterSlider";
 import Splash from "../components/Splash";
 import LoaderSpin from "../components/LoaderSpin";
+
+import MapContainer from "../containers/MapContainer";
 
 import { useStore } from "../store";
 
@@ -36,7 +35,8 @@ export default () => {
             font-weight: bold;
             color: #bbb;
             box-shadow: 2px 0 10px 0px black;
-            flex-self: 20%;
+            width: 300px;
+            overflow: auto;
           }
 
           .mapGroup {

@@ -17,7 +17,6 @@ export default ({ name, filterValues = {}, onChange = () => {} }) => {
           .optionsCheckBoxContainer {
             display: flex;
             flex-direction: column;
-            width: 300px;
             overflow: auto;
             background: #333;
           }

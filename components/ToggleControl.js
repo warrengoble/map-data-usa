@@ -8,6 +8,7 @@ export default ({ title, onChange = () => {}, ...props }) => {
           .block {
             display: flex;
             align-items: center;
+            flex: 1;
           }
 
           .switch {
