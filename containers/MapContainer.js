@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Slider } from "antd";
-import { clamp } from "lodash/fp";
+import { clamp, pipe } from "lodash/fp";
 import ReactResizeDetector from "react-resize-detector";
 
-import MapUSA from "../components/MapUSA";
+import MapUSA, { mapWidth, mapHeight } from "../components/MapUSA";
 
-const panTransform = (transformMatrix, x, y) => {
-  const newTransform = [...transformMatrix];
+const transform = (scale, x, y) => {
+  const newTransform = [1, 0, 0, 1, 0, 0];
+
+  newTransform[0] *= scale;
+  newTransform[1] *= scale;
+  newTransform[2] *= scale;
+  newTransform[3] *= scale;
 
   newTransform[4] = x;
   newTransform[5] = y;
@@ -14,39 +19,41 @@ const panTransform = (transformMatrix, x, y) => {
   return newTransform;
 };
 
-const zoomTransform = (transformMatrix, scale, x, y) => {
-  const newTransform = [...transformMatrix];
-
-  newTransform[0] *= scale;
-  newTransform[1] *= scale;
-  newTransform[2] *= scale;
-  newTransform[3] *= scale;
-
-  // Offset
-  newTransform[4] += (1 - scale) * x;
-  newTransform[5] += (1 - scale) * y;
-
-  return newTransform;
-};
-
 export default ({ children = [], minZoom = 0.5, maxZoom = 5 }) => {
+  const mapRef = useRef();
   const [zoom, setZoom] = useState(1);
   const [[posX, posY], setPosition] = useState([0, 0]);
   const [{ width, height }, setSize] = useState({
     width: 200,
     height: 100,
   });
+  //const [transformMatrix, setTransformMatrix] = useState([1, 0, 0, 1, 0, 0]);
 
-  const zoomClamped = (value) => clamp(minZoom, maxZoom, value);
+  const setZoomWrapper = (zoomValue) => {
+    const zoomValueClamped = clamp(minZoom, maxZoom, zoomValue);
+    const zoomDelta = zoom - zoomValueClamped;
 
-  console.log(posX, posY);
+    setZoom(zoomValueClamped);
+    setPositionWrapper([
+      posX + (zoomDelta * (width / 2)) / 2,
+      posY + (zoomDelta * (height / 2)) / 2,
+    ]);
+  };
 
-  const transformMatrix = zoomTransform(
-    panTransform([1, 0, 0, 1, 0, 0], posX, posY),
-    zoom,
-    -posX + width / 2,
-    -posY + height / 2
-  );
+  const setPositionWrapper = ([x, y]) => {
+    setPosition([x, y]);
+  };
+
+  useEffect(() => {
+    const { current: { clientWidth, clientHeight } = {} } = mapRef;
+
+    setPosition([0, 0]);
+    setZoom(clientWidth / mapWidth);
+  }, []);
+
+  // const zoomClamped = (value) => clamp(minZoom, maxZoom, value);
+
+  const transformMatrix = transform(zoom, posX, posY);
 
   return (
     <div className="root">
@@ -104,19 +111,17 @@ export default ({ children = [], minZoom = 0.5, maxZoom = 5 }) => {
         }}
       />
       <div
+        ref={mapRef}
         className="mapContainer"
         onMouseMove={(e) => {
           const { movementX, movementY, buttons } = e;
 
           if (buttons === 1) {
-            setPosition([
-              posX + movementX / (zoom * 2),
-              posY + movementY / (zoom * 2),
-            ]);
+            setPositionWrapper([posX + movementX, posY + movementY]);
           }
         }}
         onWheel={({ deltaY }) => {
-          setZoom(zoomClamped(zoom - deltaY * 0.001));
+          setZoomWrapper(zoom - deltaY * 0.01);
         }}
       >
         <MapUSA
@@ -137,7 +142,7 @@ export default ({ children = [], minZoom = 0.5, maxZoom = 5 }) => {
               max={maxZoom}
               step={0.01}
               onChange={(v) => {
-                setZoom(zoomClamped(v));
+                setZoomWrapper(v);
               }}
               tooltipVisible={false}
             />
