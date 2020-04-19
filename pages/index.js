@@ -5,11 +5,12 @@ import { pipe, map, toPairs, compact, reduce, values, every } from "lodash/fp";
 
 import { County } from "../components/MapUSA";
 import FilterCheckBox from "../components/FilterCheckBox";
-// import FilterSlider from "../components/FilterSlider";
+import FilterSlider from "../components/FilterSlider";
 import Splash from "../components/Splash";
 import LoaderSpin from "../components/LoaderSpin";
 
 import MapContainer from "../containers/MapContainer";
+import FilterContainer from "../containers/FilterContainer";
 
 import { useStore } from "../store";
 
@@ -63,50 +64,36 @@ export default () => {
                 map(([name, { type, ui, filterValues }]) => {
                   if (ui === "checkbox") {
                     return (
-                      <FilterCheckBox
-                        name={name}
-                        filterValues={filterValues}
-                        onChange={(key) => {
-                          const filter = get(store.filters, name);
-                          set(store.filters, name, {
-                            ...filter,
-                            filterValues: {
-                              ...filter.filterValues,
-                              [key]: !filter.filterValues[key],
-                            },
-                          });
-                        }}
-                      />
+                      <FilterContainer name={name}>
+                        <FilterCheckBox
+                          name={name}
+                          filterValues={filterValues}
+                          onChange={(key) => {
+                            const filter = get(store.filters, name);
+                            set(store.filters, name, {
+                              ...filter,
+                              filterValues: {
+                                ...filter.filterValues,
+                                [key]: !filter.filterValues[key],
+                              },
+                            });
+                          }}
+                        />
+                      </FilterContainer>
                     );
                   }
 
                   if (ui === "slider" && type === "number") {
                     return (
-                      <FilterCheckBox
+                      <FilterSlider
                         name={name}
                         filterValues={filterValues}
                         onChange={(key) => {
-                          const filter = get(store.filters, name);
-                          set(store.filters, name, {
-                            ...filter,
-                            filterValues: {
-                              ...filter.filterValues,
-                              [key]: !filter.filterValues[key],
-                            },
-                          });
+                          // Select only single
+                          console.log("key", key, name);
                         }}
                       />
                     );
-                    // return (
-                    //   <FilterSlider
-                    //     name={name}
-                    //     filterValues={filterValues}
-                    //     onChange={(key) => {
-                    //       // Select only single
-                    //       console.log("key", key, name);
-                    //     }}
-                    //   />
-                    // );
                   }
                 }),
                 compact

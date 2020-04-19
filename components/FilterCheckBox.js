@@ -3,7 +3,7 @@ import { pipe, map, entries } from "lodash/fp";
 
 import ToggleControl from "./ToggleControl";
 
-export default ({ name, filterValues = {}, onChange = () => {} }) => {
+export default ({ filterValues = {}, onChange = () => {} }) => {
   //
   return (
     <div>
