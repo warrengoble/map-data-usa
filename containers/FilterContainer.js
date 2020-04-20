@@ -5,6 +5,7 @@ export default ({ name, children = [] }) => {
         .root {
           display: flex;
           flex-direction: column;
+          background: #222;
         }
 
         .header {
