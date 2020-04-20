@@ -26,7 +26,7 @@ export default () => {
             flex-direction: row;
             width: 100vw;
             height: 100vh;
-            background: #222;
+            background: #111;
             user-select: none;
           }
 
