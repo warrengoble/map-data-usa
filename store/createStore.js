@@ -6,19 +6,19 @@ export default () =>
       loading: false,
       results: [],
       filters: {},
-      // clearFilters() {
-      //   this.filters = flow(
-      //     toPairs,
-      //     map(([k, v]) => [k, false]),
-      //     fromPairs
-      //   )(this.filters);
-      // },
-      // selectAllFilters() {
-      //   this.filters = flow(
-      //     toPairs,
-      //     map(([k, v]) => [k, true]),
-      //     fromPairs
-      //   )(this.filters);
-      // }
+      clearFilters(name) {
+        this.filters[name].filterValues = flow(
+          toPairs,
+          map(([k, v]) => [k, false]),
+          fromPairs
+        )(this.filters[name].filterValues);
+      },
+      selectAllFilters(name) {
+        this.filters[name].filterValues = flow(
+          toPairs,
+          map(([k, v]) => [k, true]),
+          fromPairs
+        )(this.filters[name].filterValues);
+      },
     };
   };

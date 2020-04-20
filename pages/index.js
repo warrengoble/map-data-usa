@@ -78,6 +78,12 @@ export default () => {
                               },
                             });
                           }}
+                          onClearFilters={(name) => {
+                            store.clearFilters(name);
+                          }}
+                          onSelectAllFilters={(name) => {
+                            store.selectAllFilters(name);
+                          }}
                         />
                       </FilterContainer>
                     );

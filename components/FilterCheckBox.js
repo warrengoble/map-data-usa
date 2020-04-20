@@ -3,7 +3,13 @@ import { pipe, map, entries } from "lodash/fp";
 
 import ToggleControl from "./ToggleControl";
 
-export default ({ filterValues = {}, onChange = () => {} }) => {
+export default ({
+  name = "",
+  filterValues = {},
+  onChange = () => {},
+  onClearFilters = () => {},
+  onSelectAllFilters = () => {},
+}) => {
   //
   return (
     <div>
@@ -23,10 +29,22 @@ export default ({ filterValues = {}, onChange = () => {} }) => {
         `}
       </style>
       <div className="optionsButtons">
-        <Button style={{ flex: 0.5 }} onClick={() => filter.clearFilters()}>
+        <Button
+          style={{ flex: 0.5 }}
+          onClick={() => {
+            onClearFilters(name);
+            // store.clearFilters(name);
+          }}
+        >
           Clear
         </Button>
-        <Button style={{ flex: 0.5 }} onClick={() => store.selectAllFilters()}>
+        <Button
+          style={{ flex: 0.5 }}
+          onClick={() => {
+            onSelectAllFilters(name);
+            // store.selectAllFilters(name);
+          }}
+        >
           Select All
         </Button>
       </div>
