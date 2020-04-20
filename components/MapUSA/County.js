@@ -1,6 +1,6 @@
 import React from "react";
 
-import { counties as usaCounties } from "./usaCounties.json";
+import { counties as usaCounties } from "convert-counties-svg2json";
 
 export default ({ id, ...props }) => {
   const { [id]: { path, state, name } = {} } = usaCounties;

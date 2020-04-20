@@ -6,13 +6,16 @@ import {
   mapWidth,
   mapHeight,
   counties as usaCounties,
-} from "./usaCounties.json"; // Generated from converter. https://github.com/warrengoble/convert-counties-svg2js
+} from "convert-counties-svg2json";
 
 import background from "./background.jpg";
 import County from "./County";
 
+export { County, usaCounties, mapWidth, mapHeight };
+
 export default ({
   children,
+  showBackground = false,
   backgroundOpacity = 0.2,
   transform,
   width,
@@ -47,12 +50,14 @@ export default ({
         xmlns="http://www.w3.org/2000/svg"
       >
         <g className="map" transform={transform}>
-          <image
-            href={background}
-            width={mapWidth}
-            height={mapHeight}
-            opacity={backgroundOpacity}
-          />
+          {showBackground && (
+            <image
+              href={background}
+              width={mapWidth}
+              height={mapHeight}
+              opacity={backgroundOpacity}
+            />
+          )}
           {children}
           <path d={pathBorders} fill="none" stroke="black" strokeWidth={0.25} />
           <path d={pathSeparator} fill="none" stroke="#222" strokeWidth={3} />
@@ -61,5 +66,3 @@ export default ({
     </div>
   );
 };
-
-export { County, usaCounties };
