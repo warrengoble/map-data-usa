@@ -1,23 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Slider } from "antd";
-import { clamp, pipe } from "lodash/fp";
+import { clamp } from "lodash/fp";
 import ReactResizeDetector from "react-resize-detector";
 
 import MapUSA, { mapWidth, mapHeight } from "../components/MapUSA";
-
-const transform = (scale, x, y) => {
-  const newTransform = [1, 0, 0, 1, 0, 0];
-
-  newTransform[0] *= scale;
-  newTransform[1] *= scale;
-  newTransform[2] *= scale;
-  newTransform[3] *= scale;
-
-  newTransform[4] = x;
-  newTransform[5] = y;
-
-  return newTransform;
-};
 
 export default ({ children = [], minZoom = 0.5, maxZoom = 5 }) => {
   const mapRef = useRef();
@@ -27,7 +13,6 @@ export default ({ children = [], minZoom = 0.5, maxZoom = 5 }) => {
     width: 200,
     height: 100,
   });
-  //const [transformMatrix, setTransformMatrix] = useState([1, 0, 0, 1, 0, 0]);
 
   const setZoomWrapper = (zoomValue) => {
     const zoomValueClamped = clamp(minZoom, maxZoom, zoomValue);
@@ -51,10 +36,7 @@ export default ({ children = [], minZoom = 0.5, maxZoom = 5 }) => {
     setZoom(clientWidth / mapWidth);
   }, []);
 
-  // const zoomClamped = (value) => clamp(minZoom, maxZoom, value);
-
-  const transformMatrix = transform(zoom, posX, posY);
-
+  const transformMatrix = [zoom, 0, 0, zoom, posX, posY];
   return (
     <div className="root">
       <style jsx>
