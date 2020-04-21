@@ -2,6 +2,8 @@ import React from "react";
 import { useObserver } from "mobx-react-lite";
 import { get, set } from "mobx";
 import { pipe, map, toPairs, compact, reduce, values, every } from "lodash/fp";
+import { GithubOutlined, CodeOutlined } from "@ant-design/icons";
+import { useRouter } from "next/router";
 
 import { County } from "../components/MapUSA";
 import FilterCheckBox from "../components/FilterCheckBox";
@@ -15,6 +17,7 @@ import FilterContainer from "../containers/FilterContainer";
 import { useStore } from "../store";
 
 export default () => {
+  const router = useRouter();
   const store = useStore();
 
   return (
@@ -43,6 +46,13 @@ export default () => {
           .mapGroup {
             position: relative;
             flex: 1;
+          }
+
+          .codeIcon {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 5px;
           }
         `}
       </style>
@@ -136,6 +146,16 @@ export default () => {
               </MapContainer>
               {showSplash && <Splash />}
               {store.loading && <LoaderSpin />}
+              <div className="codeIcon">
+                <GithubOutlined
+                  style={{ color: "white", fontSize: "2em" }}
+                  onClick={() =>
+                    router.push(
+                      "//github.com/warrengoble/quality-of-life-map"
+                    )
+                  }
+                />
+              </div>
             </div>
           </>
         );
