@@ -11,6 +11,7 @@
   "author": "Warren Goble",
   "license": "MIT",
   "dependencies": {
+    "@ant-design/icons": "^4.0.6",
     "@feathersjs/errors": "^4.5.3",
     "@feathersjs/feathers": "^4.5.3",
     "@feathersjs/rest-client": "^4.5.3",
