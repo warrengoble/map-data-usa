@@ -59,6 +59,13 @@ export default () => {
             right: 0;
             padding: 5px;
           }
+
+          .mapControls {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 5px;
+          }
         `}
       </style>
       {useObserver(() => {
@@ -121,16 +128,6 @@ export default () => {
               )(store.filters)}
             </div>
             <div className="mapGroup">
-              <Tooltip placement="right" title={"Toggle Map Background"}>
-                <Button
-                  type={store.showMapBackground ? "primary" : "default"}
-                  onClick={() => {
-                    store.showMapBackground = !store.showMapBackground;
-                  }}
-                >
-                  <SwitcherOutlined />
-                </Button>
-              </Tooltip>
               <MapContainer showMapBackground={store.showMapBackground}>
                 {!showSplash &&
                   pipe(
@@ -169,6 +166,18 @@ export default () => {
                   }
                 />
               </div>
+              <div className="mapControls">
+                <Tooltip placement="right" title={"Toggle Map Background"}>
+                  <Button
+                    type={store.showMapBackground ? "primary" : "default"}
+                    onClick={() => {
+                      store.showMapBackground = !store.showMapBackground;
+                    }}
+                  >
+                    <SwitcherOutlined />
+                  </Button>
+                </Tooltip>
+              </div>
             </div>
           </>
         );
@@ -176,3 +185,18 @@ export default () => {
     </div>
   );
 };
+
+/*
+<div className={mapControls}>
+                <Tooltip placement="right" title={"Toggle Map Background"}>
+                  <Button
+                    type={store.showMapBackground ? "primary" : "default"}
+                    onClick={() => {
+                      store.showMapBackground = !store.showMapBackground;
+                    }}
+                  >
+                    <SwitcherOutlined />
+                  </Button>
+                </Tooltip>
+              </div>
+              */
