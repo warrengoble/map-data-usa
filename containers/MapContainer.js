@@ -5,7 +5,12 @@ import ReactResizeDetector from "react-resize-detector";
 
 import MapUSA, { mapWidth, mapHeight } from "../components/MapUSA";
 
-export default ({ children = [], minZoom = 0.5, maxZoom = 5 }) => {
+export default ({
+  children = [],
+  minZoom = 0.5,
+  maxZoom = 5,
+  showMapBackground = false,
+}) => {
   const mapRef = useRef();
   const [zoom, setZoom] = useState(1);
   const [[posX, posY], setPosition] = useState([0, 0]);
@@ -110,6 +115,7 @@ export default ({ children = [], minZoom = 0.5, maxZoom = 5 }) => {
           transform={"matrix(" + transformMatrix.join(" ") + ")"}
           width={width}
           height={height}
+          showBackground={showMapBackground}
         >
           {children}
         </MapUSA>

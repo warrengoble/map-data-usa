@@ -6,6 +6,7 @@ export default () =>
       loading: false,
       results: [],
       filters: {},
+      showMapBackground: false,
       clearFilters(name) {
         this.filters[name].filterValues = flow(
           toPairs,

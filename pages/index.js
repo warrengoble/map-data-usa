@@ -2,7 +2,12 @@ import React from "react";
 import { useObserver } from "mobx-react-lite";
 import { get, set } from "mobx";
 import { pipe, map, toPairs, compact, reduce, values, every } from "lodash/fp";
-import { GithubOutlined, CodeOutlined } from "@ant-design/icons";
+import {
+  GithubOutlined,
+  CodeOutlined,
+  SwitcherOutlined,
+} from "@ant-design/icons";
+import { Button, Tooltip } from "antd";
 import { useRouter } from "next/router";
 
 import { County } from "../components/MapUSA";
@@ -116,7 +121,17 @@ export default () => {
               )(store.filters)}
             </div>
             <div className="mapGroup">
-              <MapContainer>
+              <Tooltip placement="right" title={"Toggle Map Background"}>
+                <Button
+                  type={store.showMapBackground ? "primary" : "default"}
+                  onClick={() => {
+                    store.showMapBackground = !store.showMapBackground;
+                  }}
+                >
+                  <SwitcherOutlined />
+                </Button>
+              </Tooltip>
+              <MapContainer showMapBackground={store.showMapBackground}>
                 {!showSplash &&
                   pipe(
                     reduce(
@@ -150,9 +165,7 @@ export default () => {
                 <GithubOutlined
                   style={{ color: "white", fontSize: "2em" }}
                   onClick={() =>
-                    router.push(
-                      "//github.com/warrengoble/quality-of-life-map"
-                    )
+                    router.push("//github.com/warrengoble/quality-of-life-map")
                   }
                 />
               </div>
