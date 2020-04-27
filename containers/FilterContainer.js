@@ -1,5 +1,4 @@
 export default ({ name, highlighted = false, children }) => {
-  console.log("children", children);
   return (
     <div className="root">
       <style jsx>{`
