@@ -1,10 +1,11 @@
 import { Button } from "antd";
-import { pipe, map, entries } from "lodash/fp";
+import { pipe, map, toPairs } from "lodash/fp";
 
 import ToggleControl from "./ToggleControl";
 
 export default ({
   name = "",
+  highlighted = false,
   filterValues = {},
   onChange = () => {},
   onClearFilters = () => {},
@@ -24,7 +25,7 @@ export default ({
             display: flex;
             flex-direction: column;
             overflow: auto;
-            background: #333;
+            background: ${highlighted ? "rgba(255,0,0,0.2)" : "#333"};
           }
         `}
       </style>
@@ -33,7 +34,6 @@ export default ({
           style={{ flex: 0.5 }}
           onClick={() => {
             onClearFilters(name);
-            // store.clearFilters(name);
           }}
         >
           Clear
@@ -42,7 +42,6 @@ export default ({
           style={{ flex: 0.5 }}
           onClick={() => {
             onSelectAllFilters(name);
-            // store.selectAllFilters(name);
           }}
         >
           Select All
@@ -50,7 +49,7 @@ export default ({
       </div>
       <div className="optionsCheckBoxContainer">
         {pipe(
-          entries,
+          toPairs,
           map(([key, checked]) => (
             <ToggleControl
               key={key}
