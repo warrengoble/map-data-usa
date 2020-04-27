@@ -10,7 +10,7 @@ import {
   values,
   every,
   filter,
-  length,
+  some,
 } from "lodash/fp";
 import { CodeOutlined, SwitcherOutlined, AimOutlined } from "@ant-design/icons";
 import { Button, Tooltip } from "antd";
@@ -96,7 +96,13 @@ export default () => {
                 map(([name, { type, ui, filterValues }]) => {
                   if (ui === "checkbox") {
                     return (
-                      <FilterContainer name={name}>
+                      <FilterContainer
+                        name={name}
+                        highlighted={!pipe(
+                          values,
+                          some((v) => v === true)
+                        )(filterValues)}
+                      >
                         <FilterCheckBox
                           name={name}
                           filterValues={filterValues}
