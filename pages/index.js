@@ -1,12 +1,18 @@
 import React from "react";
 import { useObserver } from "mobx-react-lite";
 import { get, set } from "mobx";
-import { pipe, map, toPairs, compact, reduce, values, every } from "lodash/fp";
 import {
-  GithubOutlined,
-  CodeOutlined,
-  SwitcherOutlined,
-} from "@ant-design/icons";
+  pipe,
+  map,
+  toPairs,
+  compact,
+  reduce,
+  values,
+  every,
+  filter,
+  length,
+} from "lodash/fp";
+import { CodeOutlined, SwitcherOutlined, AimOutlined } from "@ant-design/icons";
 import { Button, Tooltip } from "antd";
 import { useRouter } from "next/router";
 
@@ -69,13 +75,17 @@ export default () => {
         `}
       </style>
       {useObserver(() => {
-        const showSplash = pipe(
+        const showFilters = pipe(
           toPairs,
-          reduce(
-            (a, [k, { filterValues = {} }]) => [...a, ...values(filterValues)],
-            []
+          map(([k, { filterValues }]) =>
+            pipe(
+              values,
+              every((v) => v === false)
+            )(filterValues)
+              ? k
+              : undefined
           ),
-          every((v) => !v)
+          filter((v) => v)
         )(store.filters);
 
         return (
@@ -111,55 +121,54 @@ export default () => {
                     );
                   }
 
-                  if (ui === "slider" && type === "number") {
-                    return (
-                      <FilterSlider
-                        name={name}
-                        filterValues={filterValues}
-                        onChange={(key) => {
-                          // Select only single
-                          console.log("key", key, name);
-                        }}
-                      />
-                    );
-                  }
+                  // if (ui === "slider" && type === "number") {
+                  //   return (
+                  //     <FilterSlider
+                  //       name={name}
+                  //       filterValues={filterValues}
+                  //       onChange={(key) => {
+                  //         // Select only single
+                  //         console.log("key", key, name);
+                  //       }}
+                  //     />
+                  //   );
+                  // }
                 }),
                 compact
               )(store.filters)}
             </div>
             <div className="mapGroup">
               <MapContainer showMapBackground={store.showMapBackground}>
-                {!showSplash &&
-                  pipe(
-                    reduce(
-                      (
-                        {
-                          values = [],
-                          minValue = Infinity,
-                          maxValue = -Infinity,
-                        },
-                        { _id: id, value }
-                      ) => ({
-                        values: [...values, { id, value }],
-                        minValue: value < minValue ? value : minValue,
-                        maxValue: value > maxValue ? value : maxValue,
-                      }),
-                      {}
-                    ),
-                    ({ values = [], minValue, maxValue }) =>
-                      map(({ id, value }) => ({
-                        id,
-                        value: (value - minValue) / (maxValue - minValue),
-                      }))(values),
-                    map(({ id, value }) => (
-                      <County key={id} id={id} fillOpacity={value} fill="red" />
-                    ))
-                  )(store.results)}
+                {pipe(
+                  reduce(
+                    (
+                      {
+                        values = [],
+                        minValue = Infinity,
+                        maxValue = -Infinity,
+                      },
+                      { _id: id, value }
+                    ) => ({
+                      values: [...values, { id, value }],
+                      minValue: value < minValue ? value : minValue,
+                      maxValue: value > maxValue ? value : maxValue,
+                    }),
+                    {}
+                  ),
+                  ({ values = [], minValue, maxValue }) =>
+                    map(({ id, value }) => ({
+                      id,
+                      value: (value - minValue) / (maxValue - minValue),
+                    }))(values),
+                  map(({ id, value }) => (
+                    <County key={id} id={id} fillOpacity={value} fill="red" />
+                  ))
+                )(store.results)}
               </MapContainer>
-              {showSplash && <Splash />}
+              {showFilters.length > 0 && <Splash showFilters={showFilters} />}
               {store.loading && <LoaderSpin />}
               <div className="codeIcon">
-                <GithubOutlined
+                <CodeOutlined
                   style={{ color: "white", fontSize: "2em" }}
                   onClick={() =>
                     router.push("//github.com/warrengoble/quality-of-life-map")
@@ -167,7 +176,7 @@ export default () => {
                 />
               </div>
               <div className="mapControls">
-                <Tooltip placement="right" title={"Toggle Map Background"}>
+                <Tooltip placement="bottom" title={"Toggle Map Background"}>
                   <Button
                     type={store.showMapBackground ? "primary" : "default"}
                     onClick={() => {
@@ -175,6 +184,15 @@ export default () => {
                     }}
                   >
                     <SwitcherOutlined />
+                  </Button>
+                </Tooltip>
+                <Tooltip placement="bottom" title={"Center Map"}>
+                  <Button
+                    onClick={() => {
+                      //
+                    }}
+                  >
+                    <AimOutlined />
                   </Button>
                 </Tooltip>
               </div>
@@ -185,18 +203,3 @@ export default () => {
     </div>
   );
 };
-
-/*
-<div className={mapControls}>
-                <Tooltip placement="right" title={"Toggle Map Background"}>
-                  <Button
-                    type={store.showMapBackground ? "primary" : "default"}
-                    onClick={() => {
-                      store.showMapBackground = !store.showMapBackground;
-                    }}
-                  >
-                    <SwitcherOutlined />
-                  </Button>
-                </Tooltip>
-              </div>
-              */
