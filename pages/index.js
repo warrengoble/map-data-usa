@@ -1,6 +1,5 @@
 import React from "react";
 import { useObserver } from "mobx-react-lite";
-import { get, set } from "mobx";
 import {
   pipe,
   map,
@@ -98,23 +97,18 @@ export default () => {
                     return (
                       <FilterContainer
                         name={name}
-                        highlighted={!pipe(
-                          values,
-                          some((v) => v === true)
-                        )(filterValues)}
+                        highlighted={
+                          !pipe(
+                            values,
+                            some((v) => v === true)
+                          )(filterValues)
+                        }
                       >
                         <FilterCheckBox
                           name={name}
                           filterValues={filterValues}
                           onChange={(key) => {
-                            const filter = get(store.filters, name);
-                            set(store.filters, name, {
-                              ...filter,
-                              filterValues: {
-                                ...filter.filterValues,
-                                [key]: !filter.filterValues[key],
-                              },
-                            });
+                            store.updateFilter(name, key);
                           }}
                           onClearFilters={(name) => {
                             store.clearFilters(name);
