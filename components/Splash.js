@@ -1,4 +1,4 @@
-export default () => {
+export default ({ showFilters = [] }) => {
   return (
     <div className="root">
       <style jsx>{`
@@ -16,7 +16,7 @@ export default () => {
           font-size: 24pt;
         }
       `}</style>
-      <div>Please Select Filters</div>
+      <div>Please Select Filters - {showFilters.join(", ")}.</div>
     </div>
   );
 };
