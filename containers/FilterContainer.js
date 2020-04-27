@@ -1,4 +1,5 @@
-export default ({ name, children = [] }) => {
+export default ({ name, highlighted = false, children }) => {
+  console.log("children", children);
   return (
     <div className="root">
       <style jsx>{`
@@ -16,7 +17,11 @@ export default ({ name, children = [] }) => {
         }
       `}</style>
       <div className="header">{name}</div>
-      {children}
+      {React.Children.map(children, (child) =>
+        React.cloneElement(child, {
+          highlighted,
+        })
+      )}
     </div>
   );
 };
