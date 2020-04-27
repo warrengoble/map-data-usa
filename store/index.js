@@ -1,7 +1,7 @@
 import { reaction, toJS } from "mobx";
 import { useLocalStore, useStaticRendering } from "mobx-react-lite";
 import { createContext } from "react";
-import { values, pipe, map } from "lodash/fp";
+import { values, pipe, map, every, some } from "lodash/fp";
 import { debounce } from "lodash";
 
 import feathers from "@feathersjs/feathers";
@@ -44,6 +44,21 @@ export const StoreProvider = ({ children }) => {
       )(store.filters),
     ],
     debounce(async () => {
+      if (
+        !pipe(
+          values,
+          map(({ filterValues }) =>
+            pipe(
+              values,
+              some((v) => v === true)
+            )(filterValues)
+          ),
+          every((v) => v)
+        )(store.filters)
+      ) {
+        return;
+      }
+
       store.loading = true;
       store.results = await serviceData.find({
         query: {
