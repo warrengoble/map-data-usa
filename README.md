@@ -11,9 +11,10 @@ This is an application demo and boilerplate to create a visual map of the USA wi
 - Try and use SSR (Server Side Render) when available.
 - MobX global context for state management.
 - Build a simple USA Map React component with county level data.
-- Tree based querying for nested data. (Incomplete)
 
 ## Demo
+
+Mortality data set is stored using in a MongoDB collection. For local development you can use a `.env` file and set MONGODB_URI there.
 
 https://quality-of-life-map.now.sh
 
@@ -28,11 +29,37 @@ npm run dev
 # Goto: http://localhost:3000
 ```
 
+## Data Config Example
+
+Config for data can be located at `/pages/api/_utils/config.js`. Please modify this file to match your data structure.
+
+```javascript
+export default {
+  filters: {
+    year: { type: "number", ui: "checkbox" },
+    category: { type: "string", ui: "checkbox" },
+  },
+  aggerator: "countyId",
+};
+```
+
+MongoDB JSON Document
+
+```js
+{
+  _id: "1-1985-Neonatal disorders";
+  countyId: 1;
+  category: "Neonatal disorders";
+  year: 1985;
+  value: 8.51;
+}
+```
+
 ## Major technology
 
 - NextJS - https://nextjs.org/
 - React - https://reactjs.org/
-- Mobx - https://mobx.js.org/
+- MobX - https://mobx.js.org/
 - FeathersJS - https://feathersjs.com/
 - lodash/fp - https://github.com/lodash/lodash/wiki/FP-Guide
 - Ant Design - https://ant.design/
@@ -64,19 +91,11 @@ Zeit now uses a file named `now.json` to set the ENV variable `MONGODB_URI`.
 
 TODO
 
-## MongoDB
-
-Mortality data set is stored using in a MongoDB collection. For local development you can use a `.env` file and set MONGODB_URI there. Data can be populated into the database by running `npm run populate`.
-
 ## Notes & TODOS
 
 - Using MongoDB server for data store.
-- Map component can be cut out and packaged into a reusable component on NPM.
 - FeatherJS serverless micro service should be cut out into a reusable NPM component.
-- Extend database functionality and integrate reusable checkbox based search using something like Contexture.
-  - https://github.com/smartprocure/contexture
 - Clean up map satellite image for Alaska and Hawaii.
-- Add zoom and pan functionality to Map component.
 - Sync MobX store with browser localstorage and save query settings and map controlled props?
 
 ## Map Component
