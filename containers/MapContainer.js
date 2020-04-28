@@ -53,8 +53,8 @@ export default observer(
     useEffect(() => {
       const { current: { clientWidth, clientHeight } = {} } = mapRef;
 
-      setPosition([0, 0]);
-      setZoom(clientWidth / mapWidth);
+      setPosition([0, (clientHeight / 2 - mapHeight / 2) / 2]);
+      setZoom(Math.min(clientWidth / mapWidth, clientHeight / mapHeight));
     }, []);
 
     const transformMatrix = [zoom, 0, 0, zoom, posX, posY];
