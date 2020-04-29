@@ -51,11 +51,17 @@ export default observer(({ children, minZoom = 0.5, maxZoom = 5 }) => {
   const resetView = () => {
     const { current: { clientWidth, clientHeight } = {} } = mapRef;
 
-    // setPosition([0, (clientHeight / 2 - mapHeight / 2) / 4]);
-    // console.log((clientHeight / 2 - mapHeight / 2) / 2);
+    if (clientWidth / mapWidth < clientHeight / mapHeight) {
+      const initialZoom = clientWidth / mapWidth;
 
-    setPosition([0, 0]);
-    setZoom(Math.min(clientWidth / mapWidth, clientHeight / mapHeight));
+      setPosition([0, (clientHeight / 2 - mapHeight / 2) / initialZoom]);
+      setZoom(initialZoom);
+    } else {
+      const initialZoom = clientHeight / mapHeight;
+
+      setPosition([(clientWidth / 2 - mapWidth / 2) / initialZoom, 0]);
+      setZoom(initialZoom);
+    }
   };
 
   useEffect(() => resetView(), []);
