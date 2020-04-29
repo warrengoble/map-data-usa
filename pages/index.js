@@ -11,8 +11,7 @@ import {
   filter,
   some,
 } from "lodash/fp";
-import { CodeOutlined, SwitcherOutlined, AimOutlined } from "@ant-design/icons";
-import { Button, Tooltip } from "antd";
+import { CodeOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 
 import { County } from "../components/MapUSA";
@@ -62,13 +61,6 @@ export default () => {
             position: absolute;
             top: 0;
             right: 0;
-            padding: 5px;
-          }
-
-          .mapControls {
-            position: absolute;
-            top: 0;
-            left: 0;
             padding: 5px;
           }
         `}
@@ -174,27 +166,6 @@ export default () => {
                     router.push("//github.com/warrengoble/quality-of-life-map")
                   }
                 />
-              </div>
-              <div className="mapControls">
-                <Tooltip placement="bottom" title={"Toggle Map Background"}>
-                  <Button
-                    type={store.showMapBackground ? "primary" : "default"}
-                    onClick={() => {
-                      store.showMapBackground = !store.showMapBackground;
-                    }}
-                  >
-                    <SwitcherOutlined />
-                  </Button>
-                </Tooltip>
-                <Tooltip placement="bottom" title={"Center Map"}>
-                  <Button
-                    onClick={() => {
-                      //
-                    }}
-                  >
-                    <AimOutlined />
-                  </Button>
-                </Tooltip>
               </div>
             </div>
           </>
