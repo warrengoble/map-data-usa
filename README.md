@@ -104,12 +104,13 @@ Map component used the following SVG data and a script was used to rebuild the d
 - https://github.com/warrengoble/convert-counties-svg2js
 - https://upload.wikimedia.org/wikipedia/commons/5/59/Usa_counties_large.svg
 
-## Dataset & Acknowledgements
+## Credits & Acknowledgements
 
-IHME United States Mortality Rates by County 1980-2014: National - All. (Deaths per 100,000 population)
+- Demo Data - IHME United States Mortality Rates by County 1980-2014: National - All. (Deaths per 100,000 population)
+  - https://www.kaggle.com/IHME/us-countylevel-mortality
+  - http://ghdx.healthdata.org/record/ihme-data/united-states-mortality-rates-county-1980-2014
 
-https://www.kaggle.com/IHME/us-countylevel-mortality
-
-http://ghdx.healthdata.org/record/ihme-data/united-states-mortality-rates-county-1980-2014
-
-NASA for providing the satellite overlay images.
+- USA background image - Credit NASA and Visible Earth for providing access to the satellite images for creation of background image.
+  - https://visibleearth.nasa.gov/collection/1484/blue-marble
+  - https://earthobservatory.nasa.gov/features/BlueMarble
+  - https://www.nasa.gov/multimedia/guidelines/index.html
