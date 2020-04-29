@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start"
   },
-  "author": "Warren Goble",
+  "author": "Warren Goble <warrengoble@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
