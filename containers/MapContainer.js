@@ -18,6 +18,8 @@ export default observer(({ children, minZoom = 0.5, maxZoom = 5 }) => {
     mapPosition: [posX, posY] = [],
     showMapBackground = false,
   } = store;
+
+  // Remove these?
   const setZoom = (v) => {
     store.mapZoom = v;
   };
@@ -25,21 +27,20 @@ export default observer(({ children, minZoom = 0.5, maxZoom = 5 }) => {
   const setPosition = (v) => {
     store.mapPosition = v;
   };
-
   //
+
   const [{ width, height }, setSize] = useState({
     width: 200,
     height: 100,
   });
 
-  const setZoomWrapper = (zoomValue) => {
+  const setZoomWrapper = (zoomValue, x = width / 2, y = height / 2) => {
     const zoomValueClamped = clamp(minZoom, maxZoom, zoomValue);
-    const zoomDelta = zoom - zoomValueClamped;
 
     setZoom(zoomValueClamped);
     setPositionWrapper([
-      posX + (zoomDelta * (width / 2)) / 2,
-      posY + (zoomDelta * (height / 2)) / 2,
+      x - ((x - posX) / zoom) * zoomValueClamped,
+      y - ((y - posY) / zoom) * zoomValueClamped,
     ]);
   };
 
@@ -132,14 +133,21 @@ export default observer(({ children, minZoom = 0.5, maxZoom = 5 }) => {
             setPositionWrapper([posX + movementX, posY + movementY]);
           }
         }}
-        onWheel={({ deltaY, deltaMode }) => {
+        onWheel={(e) => {
+          const { clientX, clientY, deltaY, deltaMode } = e;
+          const { current: parentContainer } = mapRef;
+          const { left = 0, top = 0 } = parentContainer.getBoundingClientRect();
+
+          const x = clientX - left;
+          const y = clientY - top;
+
           const deltaNormalized = deltaY * 0.001;
           const deltaAdjusted =
             deltaMode === 1
               ? deltaNormalized * 20 // LINE
               : deltaNormalized; // PIXEL
 
-          setZoomWrapper(zoom - deltaAdjusted);
+          setZoomWrapper(zoom - deltaAdjusted, x, y);
         }}
       >
         <MapUSA
