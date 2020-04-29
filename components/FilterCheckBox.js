@@ -5,13 +5,13 @@ import ToggleControl from "./ToggleControl";
 
 export default ({
   name = "",
-  highlighted = false,
+  highlighted = true,
   filterValues = {},
+  multiple = true,
   onChange = () => {},
   onClearFilters = () => {},
   onSelectAllFilters = () => {},
 }) => {
-  //
   return (
     <div>
       <style jsx>
@@ -23,30 +23,34 @@ export default ({
 
           .optionsCheckBoxContainer {
             display: flex;
+            border-top: 1px solid black;
+            border-bottom: 3px solid black;
             flex-direction: column;
             overflow: auto;
             background: ${highlighted ? "rgba(255,0,0,0.2)" : "#333"};
           }
         `}
       </style>
-      <div className="optionsButtons">
-        <Button
-          style={{ flex: 0.5 }}
-          onClick={() => {
-            onClearFilters(name);
-          }}
-        >
-          Clear
-        </Button>
-        <Button
-          style={{ flex: 0.5 }}
-          onClick={() => {
-            onSelectAllFilters(name);
-          }}
-        >
-          Select All
-        </Button>
-      </div>
+      {multiple && (
+        <div className="optionsButtons">
+          <Button
+            style={{ flex: 0.5 }}
+            onClick={() => {
+              onClearFilters(name);
+            }}
+          >
+            Clear
+          </Button>
+          <Button
+            style={{ flex: 0.5 }}
+            onClick={() => {
+              onSelectAllFilters(name);
+            }}
+          >
+            Select All
+          </Button>
+        </div>
+      )}
       <div className="optionsCheckBoxContainer">
         {pipe(
           toPairs,
