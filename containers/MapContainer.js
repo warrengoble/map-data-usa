@@ -132,8 +132,14 @@ export default observer(({ children, minZoom = 0.5, maxZoom = 5 }) => {
             setPositionWrapper([posX + movementX, posY + movementY]);
           }
         }}
-        onWheel={({ deltaY }) => {
-          setZoomWrapper(zoom - deltaY * 0.01);
+        onWheel={({ deltaY, deltaMode }) => {
+          const deltaNormalized = deltaY * 0.001;
+          const deltaAdjusted =
+            deltaMode === 1
+              ? deltaNormalized * 20 // LINE
+              : deltaNormalized; // PIXEL
+
+          setZoomWrapper(zoom - deltaAdjusted);
         }}
       >
         <MapUSA
