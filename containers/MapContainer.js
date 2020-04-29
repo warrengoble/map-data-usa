@@ -44,12 +44,12 @@ export default observer(({ children, minZoom = 0.5, maxZoom = 5 }) => {
     if (clientWidth / mapWidth < clientHeight / mapHeight) {
       const initialZoom = clientWidth / mapWidth;
 
-      store.mapPosition = [0, (clientHeight / 2 - mapHeight / 2) / initialZoom];
+      store.mapPosition = [0, clientHeight / 2 - mapHeight / 2];
       store.mapZoom = initialZoom;
     } else {
       const initialZoom = clientHeight / mapHeight;
 
-      store.mapPosition = [(clientWidth / 2 - mapWidth / 2) / initialZoom, 0];
+      store.mapPosition = [(clientWidth / 2 - mapWidth / 2) / maxZoom, 0];
       store.mapZoom = initialZoom;
     }
   };
