@@ -1,5 +1,5 @@
 {
-  "name": "quality-of-life-map",
+  "name": "map-data-usa",
   "version": 2,
   "env": {
     "MONGODB_URI": "@mongodb_uri"
