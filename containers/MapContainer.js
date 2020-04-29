@@ -19,16 +19,6 @@ export default observer(({ children, minZoom = 0.5, maxZoom = 5 }) => {
     showMapBackground = false,
   } = store;
 
-  // Remove these?
-  const setZoom = (v) => {
-    store.mapZoom = v;
-  };
-
-  const setPosition = (v) => {
-    store.mapPosition = v;
-  };
-  //
-
   const [{ width, height }, setSize] = useState({
     width: 200,
     height: 100,
@@ -37,7 +27,7 @@ export default observer(({ children, minZoom = 0.5, maxZoom = 5 }) => {
   const setZoomWrapper = (zoomValue, x = width / 2, y = height / 2) => {
     const zoomValueClamped = clamp(minZoom, maxZoom, zoomValue);
 
-    setZoom(zoomValueClamped);
+    store.mapZoom = zoomValueClamped;
     setPositionWrapper([
       x - ((x - posX) / zoom) * zoomValueClamped,
       y - ((y - posY) / zoom) * zoomValueClamped,
@@ -45,7 +35,7 @@ export default observer(({ children, minZoom = 0.5, maxZoom = 5 }) => {
   };
 
   const setPositionWrapper = ([x, y]) => {
-    setPosition([x, y]);
+    store.mapPosition = [x, y];
   };
 
   const resetView = () => {
@@ -54,13 +44,13 @@ export default observer(({ children, minZoom = 0.5, maxZoom = 5 }) => {
     if (clientWidth / mapWidth < clientHeight / mapHeight) {
       const initialZoom = clientWidth / mapWidth;
 
-      setPosition([0, (clientHeight / 2 - mapHeight / 2) / initialZoom]);
-      setZoom(initialZoom);
+      store.mapPosition = [0, (clientHeight / 2 - mapHeight / 2) / initialZoom];
+      store.mapZoom = initialZoom;
     } else {
       const initialZoom = clientHeight / mapHeight;
 
-      setPosition([(clientWidth / 2 - mapWidth / 2) / initialZoom, 0]);
-      setZoom(initialZoom);
+      store.mapPosition = [(clientWidth / 2 - mapWidth / 2) / initialZoom, 0];
+      store.mapZoom = initialZoom;
     }
   };
 
