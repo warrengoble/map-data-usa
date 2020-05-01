@@ -88,6 +88,7 @@ export default () => {
                   if (ui === "checkbox") {
                     return (
                       <FilterContainer
+                        key={name}
                         name={name}
                         highlighted={
                           !pipe(
