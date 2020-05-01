@@ -34,6 +34,8 @@ Config for data can be located at `/pages/api/_utils/config.js`. Please modify t
 
 ```javascript
 export default {
+  databaseName: "quality-of-life",
+  collectionName: "data",
   filters: {
     year: { type: "number", ui: "checkbox" },
     category: { type: "string", ui: "checkbox" },
