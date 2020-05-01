@@ -3,8 +3,8 @@ import { MongoClient } from "mongodb";
 import serviceMongoDB from "feathers-mongodb";
 import { toPairs, pipe, map, reduce } from "lodash/fp";
 
-import feathersServerless from "../_utils/feathersServerless";
-import config from "../_utils/config";
+import feathersServerless from "./_utils/feathersServerless";
+import config from "./_utils/config";
 
 let cachedClient = null;
 
