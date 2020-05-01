@@ -1,35 +1,15 @@
 import feathers from "@feathersjs/feathers";
-import { MongoClient } from "mongodb";
 import serviceMongoDB from "feathers-mongodb";
 import { toPairs, pipe, map, reduce } from "lodash/fp";
 
 import feathersServerless from "./_utils/feathersServerless";
 import config from "./_utils/config";
+import connect from "./_utils/connect";
 
-let cachedClient = null;
-
-export const app = feathersServerless(feathers());
-
-// Put in _utils
-const connectMongoDB = async (uri) => {
-  if (cachedClient) {
-    return cachedClient;
-  }
-
-  const client = await MongoClient.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-
-  cachedClient = client;
-  return client;
-};
+const app = feathersServerless(feathers());
 
 export default async (req, res) => {
-  // Reusable
-  const client = await connectMongoDB(process.env.MONGODB_URI);
-  const db = await client.db("quality-of-life");
-  const collection = await db.collection("data");
+  const collection = await connect();
   const service = serviceMongoDB({ Model: collection });
 
   app.use("filters", service);
