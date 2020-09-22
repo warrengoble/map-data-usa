@@ -1,4 +1,4 @@
-export default ({ showFilters = [] }) => {
+const Splash = ({ showFilters = [] }) => {
   return (
     <div className="root">
       <style jsx>{`
@@ -20,3 +20,5 @@ export default ({ showFilters = [] }) => {
     </div>
   );
 };
+
+export default Splash;

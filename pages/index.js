@@ -25,7 +25,7 @@ import FilterContainer from "../containers/FilterContainer";
 
 import { useStore } from "../store";
 
-export default () => {
+const Index = () => {
   const router = useRouter();
   const store = useStore();
 
@@ -175,3 +175,5 @@ export default () => {
     </div>
   );
 };
+
+export default Index;

@@ -2,7 +2,7 @@ import { reduce, pipe, keys } from "lodash/fp";
 
 import SliderControl from "./SliderControl";
 
-export default ({ name, filterValues = {}, onChange = () => {} }) => {
+const FilterSlider = ({ name, filterValues = {}, onChange = () => {} }) => {
   const filterValuesOnly = keys(filterValues);
 
   const min = reduce((a, v) => (v < a ? v : a), Infinity)(filterValuesOnly);
@@ -42,3 +42,5 @@ export default ({ name, filterValues = {}, onChange = () => {} }) => {
     </div>
   );
 };
+
+export default FilterSlider;

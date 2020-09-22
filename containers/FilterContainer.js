@@ -1,4 +1,4 @@
-export default ({ name, highlighted = false, children }) => {
+const FilterContainer = ({ name, highlighted = false, children }) => {
   return (
     <div className="root">
       <style jsx>{`
@@ -24,3 +24,5 @@ export default ({ name, highlighted = false, children }) => {
     </div>
   );
 };
+
+export default FilterContainer;

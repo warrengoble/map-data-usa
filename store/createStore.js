@@ -1,7 +1,7 @@
 import { flow, toPairs, map, fromPairs } from "lodash/fp";
 import { get, set } from "mobx";
 
-export default () =>
+const store = () =>
   function () {
     return {
       loading: false,
@@ -36,3 +36,5 @@ export default () =>
       },
     };
   };
+
+export default store;

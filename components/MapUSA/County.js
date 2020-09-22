@@ -2,7 +2,7 @@ import React from "react";
 
 import { counties as usaCounties } from "convert-counties-svg2json";
 
-export default ({ id, ...props }) => {
+const County = ({ id, ...props }) => {
   const { [id]: { path, state, name } = {} } = usaCounties;
 
   return path ? (
@@ -17,3 +17,5 @@ export default ({ id, ...props }) => {
     </path>
   ) : null;
 };
+
+export default County;

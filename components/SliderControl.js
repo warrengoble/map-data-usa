@@ -1,6 +1,6 @@
 import { Slider } from "antd";
 
-export default ({ title, ...props }) => {
+const SliderControl = ({ title, ...props }) => {
   return (
     <div className="block">
       <style jsx>
@@ -25,3 +25,5 @@ export default ({ title, ...props }) => {
     </div>
   );
 };
+
+export default SliderControl;

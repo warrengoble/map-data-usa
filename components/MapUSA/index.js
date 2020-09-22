@@ -13,7 +13,7 @@ import County from "./County";
 
 export { County, usaCounties, mapWidth, mapHeight };
 
-export default ({
+const MapUSA = ({
   children,
   showBackground = false,
   backgroundOpacity = 0.2,
@@ -66,3 +66,5 @@ export default ({
     </div>
   );
 };
+
+export default MapUSA;

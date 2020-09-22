@@ -1,6 +1,6 @@
 import { Switch } from "antd";
 
-export default ({ title, onChange = () => {}, ...props }) => {
+const ToggleControl = ({ title, onChange = () => {}, ...props }) => {
   return (
     <div className="block">
       <style jsx>
@@ -26,3 +26,5 @@ export default ({ title, onChange = () => {}, ...props }) => {
     </div>
   );
 };
+
+export default ToggleControl;

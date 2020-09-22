@@ -3,7 +3,7 @@ import { pipe, map, toPairs } from "lodash/fp";
 
 import ToggleControl from "./ToggleControl";
 
-export default ({
+const FilterCheckBox = ({
   name = "",
   highlighted = true,
   filterValues = {},
@@ -67,3 +67,5 @@ export default ({
     </div>
   );
 };
+
+export default FilterCheckBox;
