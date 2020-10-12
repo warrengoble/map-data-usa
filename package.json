@@ -12,10 +12,10 @@
   "license": "MIT",
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
-    "@feathersjs/errors": "^4.5.8",
-    "@feathersjs/feathers": "^4.5.8",
-    "@feathersjs/rest-client": "^4.5.8",
-    "antd": "^4.6.6",
+    "@feathersjs/errors": "^4.5.9",
+    "@feathersjs/feathers": "^4.5.9",
+    "@feathersjs/rest-client": "^4.5.9",
+    "antd": "^4.7.0",
     "axios": "^0.19.2",
     "convert-counties-svg2json": "github:warrengoble/convert-counties-svg2json#master",
     "dotenv": "^8.2.0",
@@ -24,14 +24,14 @@
     "mobx": "^5.15.7",
     "mobx-react-lite": "^2.2.2",
     "mongodb": "^3.6.2",
-    "next": "^9.5.4",
+    "next": "^9.5.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-resize-detector": "^4.2.3",
     "uberproto": "^2.0.6"
   },
   "devDependencies": {
-    "file-loader": "^6.1.0",
-    "url-loader": "^4.1.0"
+    "file-loader": "^6.1.1",
+    "url-loader": "^4.1.1"
   }
 }
