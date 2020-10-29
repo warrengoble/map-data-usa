@@ -1,6 +1,12 @@
 require("dotenv").config();
 
-module.exports = {
+const withTM = require("next-transpile-modules")([
+  "drei",
+  "three",
+  "postprocessing",
+]);
+
+module.exports = withTM({
   webpack: (config, { defaultLoaders, isServer }) => {
     config.module.rules.push({
       test: /\.css$/,
@@ -9,10 +15,10 @@ module.exports = {
         {
           loader: require("styled-jsx/webpack").loader,
           options: {
-            type: "global"
-          }
-        }
-      ]
+            type: "global",
+          },
+        },
+      ],
     });
 
     const inlineImageLimit = 8192;
@@ -27,13 +33,13 @@ module.exports = {
             fallback: require.resolve("file-loader"),
             publicPath: `/_next/static/images/`,
             outputPath: `${isServer ? "../" : ""}static/images/`,
-            name: "[name]-[hash].[ext]"
-          }
-        }
-      ]
+            name: "[name]-[hash].[ext]",
+          },
+        },
+      ],
     });
 
     return config;
   },
-  target: "serverless"
-};
+  target: "serverless",
+});
