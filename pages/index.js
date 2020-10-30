@@ -14,15 +14,15 @@ import {
 import { CodeOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 
-import { County } from "../components/MapUSA";
 import FilterCheckBox from "../components/FilterCheckBox";
-import FilterSlider from "../components/FilterSlider";
+// import FilterSlider from "../components/FilterSlider";
 import Splash from "../components/Splash";
 import LoaderSpin from "../components/LoaderSpin";
 
 import MapContainer from "../containers/MapContainer";
 import FilterContainer from "../containers/FilterContainer";
 
+import { County } from "../components/MapUSAGL";
 import { useStore } from "../store";
 
 const Index = () => {

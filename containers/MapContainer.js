@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { observer } from "mobx-react-lite";
 import { Slider } from "antd";
 import { clamp } from "lodash/fp";
@@ -6,8 +7,10 @@ import ReactResizeDetector from "react-resize-detector";
 import { SwitcherOutlined, AimOutlined } from "@ant-design/icons";
 import { Button, Tooltip } from "antd";
 
-import MapUSA, { mapWidth, mapHeight } from "../components/MapUSA";
+import { mapWidth, mapHeight } from "../components/MapUSA";
 import { useStore } from "../store";
+
+const MapUSA = dynamic(() => import("../components/MapUSAGL"), { ssr: false });
 
 export default observer(({ children, minZoom = 0.5, maxZoom = 5 }) => {
   const store = useStore();
@@ -27,6 +30,10 @@ export default observer(({ children, minZoom = 0.5, maxZoom = 5 }) => {
   const setZoomWrapper = (zoomValue, x = width / 2, y = height / 2) => {
     const zoomValueClamped = clamp(minZoom, maxZoom, zoomValue);
 
+    // TODO Clean this up?
+    x = x - width / 2;
+    y = y - height / 2;
+
     store.mapZoom = zoomValueClamped;
     setPositionWrapper([
       x - ((x - posX) / zoom) * zoomValueClamped,
@@ -41,22 +48,18 @@ export default observer(({ children, minZoom = 0.5, maxZoom = 5 }) => {
   const resetView = () => {
     const { current: { clientWidth, clientHeight } = {} } = mapRef;
 
-    if (clientWidth / mapWidth < clientHeight / mapHeight) {
-      const initialZoom = clientWidth / mapWidth;
+    const zoomWidth = clientWidth / mapWidth;
+    const zoomHeight = clientHeight / mapHeight;
 
-      store.mapPosition = [0, clientHeight / 2 - mapHeight / 2];
-      store.mapZoom = initialZoom;
-    } else {
-      const initialZoom = clientHeight / mapHeight;
-
-      store.mapPosition = [(clientWidth / 2 - mapWidth / 2) / maxZoom, 0];
-      store.mapZoom = initialZoom;
-    }
+    const initialZoom = zoomWidth < zoomHeight ? zoomWidth : zoomHeight;
+    store.mapPosition = [-clientWidth / 2, -clientHeight / 2];
+    store.mapZoom = initialZoom;
   };
 
   useEffect(() => resetView(), []);
 
   const transformMatrix = [zoom, 0, 0, zoom, posX, posY];
+
   return (
     <div className="root">
       <style jsx>
@@ -147,8 +150,8 @@ export default observer(({ children, minZoom = 0.5, maxZoom = 5 }) => {
         }}
       >
         <MapUSA
-          transform={"matrix(" + transformMatrix.join(" ") + ")"}
           width={width}
+          transform={transformMatrix}
           height={height}
           showBackground={showMapBackground}
         >
