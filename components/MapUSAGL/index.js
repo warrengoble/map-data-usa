@@ -16,19 +16,6 @@ import County from "./County";
 
 export { County, usaCounties, mapWidth, mapHeight };
 
-// const Wrapper = ({ children }) => {
-//   const ref = useRef();
-//   useLayoutEffect(() => {
-//     const sphere = new Box3()
-//       .setFromObject(ref.current)
-//       .getBoundingSphere(new Sphere());
-
-//     ref.current.position.set(-sphere.center.x, -sphere.center.y, 0);
-//   }, []);
-
-//   return <group ref={ref}>{children}</group>;
-// };
-
 const MapUSA = ({ children, transform, width, height }) => {
   const [zoom, , , , posX, posY] = transform;
 
