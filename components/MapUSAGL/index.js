@@ -17,8 +17,6 @@ import Effects from "./Effects";
 
 export { County, usaCounties, mapWidth, mapHeight };
 
-export const ParamContext = createContext();
-
 const MapUSA = ({ children, transform, tilt = 0 }) => {
   const [zoom, , , , posX, posY] = transform;
 
@@ -62,10 +60,10 @@ const MapUSA = ({ children, transform, tilt = 0 }) => {
         // }}
         orthographic
         camera={{
-          position: [0, 0, 1],
+          position: [0, 0, 100],
           zoom: 1,
-          up: [0, 1, 0],
-          near: .1,
+          up: [0, 1, 1],
+          near: -10,
           far: 1000,
         }}
       >
@@ -76,20 +74,15 @@ const MapUSA = ({ children, transform, tilt = 0 }) => {
             position={[posX, -posY, 0]}
             rotation={[-threeMath.degToRad(tilt), 0, 0]}
           >
-            <directionalLight castShadow intensity={0.5} position={[0, 0, 1]} />
+            <directionalLight intensity={0.5} position={[0, 0, 1]} />
             <pointLight intensity={2} position={[0, 0, 100]} />
-            {/* <ParamContext.Provider value={{ tiltFactor: tilt / 45 }}> */}
             {children}
-            {/* </ParamContext.Provider> */}
             {map((geometry) => (
               <line key={geometry.uuid} geometry={geometry}>
                 <lineBasicMaterial
                   attach="material"
-                  color="#777777"
+                  color="#555555"
                   linewidth={1.5}
-                  depthTest={false}
-                  depthWrite={false}
-                  transparent
                 />
               </line>
             ))(stateBordersLines)}
@@ -99,8 +92,6 @@ const MapUSA = ({ children, transform, tilt = 0 }) => {
                   attach="material"
                   color="#333333"
                   linewidth={3}
-                  depthTest={false}
-                  depthWrite={false}
                 />
               </line>
             ))(separatorLines)}
