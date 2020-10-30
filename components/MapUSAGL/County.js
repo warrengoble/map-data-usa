@@ -1,21 +1,23 @@
 import React, { useState, useMemo, useContext } from "react";
 import { map } from "lodash/fp";
-import { Shape, BufferGeometry } from "three";
-import svgPathToThreePath from "../../helpers/svgPathToThreePath";
+import { Shape, BufferGeometry, Vector3 } from "three";
+import { Text } from "drei";
 
+import svgPathToThreePath from "../../helpers/svgPathToThreePath";
 import { counties as usaCounties } from "convert-counties-svg2json";
-import { ParamContext } from "./";
 
 const County = ({ id, color = "red", fillOpacity = 1 }) => {
-  // const { tiltFactor } = useContext(ParamContext);
   const tiltFactor = 0.5;
-  const [hovered, setHovered] = useState(false);
+  const [{ hovered, popupPosition }, setHovered] = useState({
+    hovered: false,
+    popupPosition: new Vector3(0, 0, 0),
+  });
 
-  const ret = useMemo(() => {
+  const { shapes, countyBordersLines, state, name } = useMemo(() => {
     const { [id]: { path, state, name } = {} } = usaCounties;
 
     if (!path) {
-      return null;
+      return {};
     }
 
     const shapes = map((path) => new Shape(path.getPoints()))(
@@ -27,67 +29,82 @@ const County = ({ id, color = "red", fillOpacity = 1 }) => {
       countyBordersLines: shapes.map((path) =>
         new BufferGeometry().setFromPoints(path.getPoints())
       ),
+      state,
+      name,
     };
   }, [id]);
 
-  if (!ret) {
+  if (!shapes) {
     return null;
   }
 
-  const { shapes, countyBordersLines } = ret;
-
   return (
-    <group>
-      <mesh
-        onPointerOver={(e) => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
-      >
-        <meshStandardMaterial
-          attach="material"
-          color={hovered ? "green" : color}
-          opacity={hovered ? 1 : fillOpacity}
-          depthTest={false}
-          depthWrite={false}
-          transparent
-        />
-        <shapeGeometry args={[shapes]} />
-      </mesh>
-      {/* <mesh >
-        <meshStandardMaterial
-          attach="material"
-          color={hovered ? "green" : color}
-          opacity={hovered ? 1 : fillOpacity}
-          depthTest={false}
-          depthWrite={false}
-          transparent
-        />
-        <extrudeBufferGeometry
-          args={[
-            shapes,
-            {
-              steps: 1,
-              depth: 50 * fillOpacity * tiltFactor + 1,
-              bevelEnabled: false,
-            },
-          ]}
-        />
-      </mesh> */}
-      {map((geometry) => (
-        <line key={geometry.uuid} geometry={geometry}>
-          <lineBasicMaterial
+    <>
+      <group>
+        <mesh
+          onPointerOver={(e) => {
+            const {
+              intersections: [{ point: popupPosition, object }] = [],
+            } = e;
+
+            // TODO Get this through store instead?
+            const scale = object.parent?.parent?.scale.x;
+            const pos = object.parent?.parent?.position;
+
+            popupPosition.x = (popupPosition.x - pos.x) / scale;
+            popupPosition.y = (popupPosition.y - pos.y) / scale;
+
+            popupPosition.y += 35;
+            popupPosition.z = 10;
+
+            setHovered({ hovered: true, popupPosition });
+          }}
+          onPointerOut={() => setHovered({ hovered: false })}
+        >
+          <meshStandardMaterial
             attach="material"
-            color="#444444"
-            linewidth={1}
-            depthTest={false}
-            depthWrite={false}
+            color={hovered ? "green" : color}
+            opacity={hovered ? 1 : fillOpacity}
             transparent
           />
-        </line>
-      ))(countyBordersLines)}
-    </group>
+          <shapeGeometry args={[shapes]} />
+        </mesh>
+        {map((geometry) => (
+          <line key={geometry.uuid} geometry={geometry}>
+            <lineBasicMaterial
+              attach="material"
+              color="#444444"
+              linewidth={1}
+            />
+          </line>
+        ))(countyBordersLines)}
+        {hovered && (
+          <>
+            <mesh position={popupPosition}>
+              <meshBasicMaterial
+                attach="material"
+                color="white"
+                opacity={0.35}
+                transparent
+              />
+              <planeGeometry args={[100, 30]} />
+            </mesh>
+            <Text
+              position={popupPosition}
+              color="black"
+              fontSize={10}
+              maxWidth={90}
+              font="https://fonts.gstatic.com/s/raleway/v14/1Ptrg8zYS_SKggPNwK4vaqI.woff"
+              anchorX="center"
+              anchorY="middle"
+            >
+              {`${name} - ${state}`}
+            </Text>
+          </>
+        )}
+      </group>
+    </>
   );
 };
 
 export default County;
-
-// <mesh onPointerOver={(e) => set(true)} onPointerOut={() => set(false)}>
