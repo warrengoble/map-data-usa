@@ -10,6 +10,7 @@ const store = () =>
       showMapBackground: false,
       mapZoom: 1,
       mapPosition: [0, 0],
+      mapTilt: 0,
       clearFilters(name) {
         this.filters[name].filterValues = flow(
           toPairs,

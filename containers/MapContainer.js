@@ -20,6 +20,7 @@ export default observer(({ children, minZoom = 0.5, maxZoom = 5 }) => {
     mapZoom: zoom,
     mapPosition: [posX, posY] = [],
     showMapBackground = false,
+    mapTilt,
   } = store;
 
   const [{ width, height }, setSize] = useState({
@@ -79,7 +80,7 @@ export default observer(({ children, minZoom = 0.5, maxZoom = 5 }) => {
             height: 100%;
           }
 
-          .toolOverlay {
+          .toolZoomContainer {
             position: absolute;
             top: 0;
             left: 0;
@@ -101,6 +102,28 @@ export default observer(({ children, minZoom = 0.5, maxZoom = 5 }) => {
             pointer-events: auto;
             background: rgba(0, 0, 0, 0.6);
             height: 3em;
+          }
+
+          .toolTiltContainer {
+            position: absolute;
+            display: flex;
+            top: 0;
+            left: 0;
+            justify-content: flex-end;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+          }
+
+          .toolTilt {
+            display: flex;
+            flex-direction: column;
+            height: 40%;
+            align-self: center;
+            pointer-events: auto;
+            color: white;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.6);
           }
 
           .zoomSlider {
@@ -150,15 +173,16 @@ export default observer(({ children, minZoom = 0.5, maxZoom = 5 }) => {
         }}
       >
         <MapUSA
-          width={width}
+          // width={width}
+          // height={height}
+          // showBackground={showMapBackground}
           transform={transformMatrix}
-          height={height}
-          showBackground={showMapBackground}
+          tilt={mapTilt}
         >
           {children}
         </MapUSA>
       </div>
-      <div className="toolOverlay">
+      <div className="toolZoomContainer">
         <div className="toolZoom">
           <div style={{ alignSelf: "center" }}>Zoom</div>
           <div className="zoomSlider">
@@ -175,8 +199,25 @@ export default observer(({ children, minZoom = 0.5, maxZoom = 5 }) => {
           </div>
         </div>
       </div>
+      {/* <div className="toolTiltContainer">
+        <div className="toolTilt">
+          <div style={{ alignSelf: "center" }}>Tilt</div>
+          <Slider
+            value={mapTilt}
+            min={0}
+            max={45}
+            step={1}
+            onChange={(v) => {
+              store.mapTilt = v;
+            }}
+            tooltipVisible={false}
+            reverse
+            vertical
+          />
+        </div>
+      </div> */}
       <div className="mapControls">
-        <Tooltip placement="bottom" title={"Toggle Map Background"}>
+        {/* <Tooltip placement="bottom" title={"Toggle Map Background"}>
           <Button
             type={store.showMapBackground ? "primary" : "default"}
             onClick={() => {
@@ -185,7 +226,7 @@ export default observer(({ children, minZoom = 0.5, maxZoom = 5 }) => {
           >
             <SwitcherOutlined />
           </Button>
-        </Tooltip>
+        </Tooltip> */}
         <Tooltip placement="bottom" title={"Center Map"}>
           <Button onClick={() => resetView()}>
             <AimOutlined />
