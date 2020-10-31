@@ -60,6 +60,8 @@ MongoDB JSON Document
 
 - NextJS: https://nextjs.org/
 - React: https://reactjs.org/
+- Three.js: https://github.com/mrdoob/three.js/
+- react-three-fiber: https://github.com/pmndrs/react-three-fiber
 - MobX: https://mobx.js.org/
 - FeathersJS: https://feathersjs.com/
 - lodash/fp: https://github.com/lodash/lodash/wiki/FP-Guide

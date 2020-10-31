@@ -1,6 +1,6 @@
 {
   "name": "map-data-usa",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -19,6 +19,7 @@
     "axios": "^0.19.2",
     "convert-counties-svg2json": "github:warrengoble/convert-counties-svg2json#master",
     "dotenv": "^8.2.0",
+    "drei": "^1.5.7",
     "feathers-mongodb": "^6.2.0",
     "lodash": "^4.17.20",
     "mobx": "^5.15.7",
@@ -28,10 +29,14 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-resize-detector": "^4.2.3",
+    "react-three-fiber": "^5.1.4",
+    "svg-path-parser": "^1.1.0",
+    "three": "^0.122.0",
     "uberproto": "^2.0.6"
   },
   "devDependencies": {
     "file-loader": "^6.1.1",
+    "next-transpile-modules": "^4.1.0",
     "url-loader": "^4.1.1"
   }
 }
